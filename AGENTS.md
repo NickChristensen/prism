@@ -13,9 +13,9 @@ The goal: instead of squeezing complex data into Telegram's 40-char-wide text re
 ### The flow
 
 1. Claudette decides a rich view is warranted (briefing, workout summary, stock view, etc.)
-2. Claudette generates a JSON spec (standalone json-render format)
-3. Spec is written to `data/<messageId>.json` on the Mac Mini
-4. Next.js dynamic route at `/rich/[id]` reads the spec and renders it
+2. Claudette generates a JSON spec
+3. Spec is written to `~/.openclaw/media/prism/<messageId>.json` on the Mac Mini
+4. Next.js dynamic route at `/[id]` reads the spec and renders it
 5. Claudette sends a Telegram message with a short text summary + link to the page
 
 ### Key design decisions
@@ -27,7 +27,7 @@ The goal: instead of squeezing complex data into Telegram's 40-char-wide text re
 
 ## Stack
 
-- **Next.js 15** — App Router, TypeScript, `src/` dir, `@/*` alias
+- **Next.js 16** — App Router, TypeScript, `src/` dir, `@/*` alias
 - **Tailwind CSS** — Styling
 - **@json-render/shadcn** — 36 pre-built shadcn/ui components (Radix UI + Tailwind). This is the standard toolbox.
 - **@json-render/react** — React renderer (shadcn package builds on this)
@@ -41,7 +41,9 @@ Card, Stack, Grid, Table, Tabs, Accordion, Badge, Alert, Progress, Avatar, Dialo
 
 ### Custom components (to be built)
 
-These are domain-specific and will be registered in the catalog alongside the shadcn components:
+These are domain-specific and will be registered in the catalog alongside the shadcn components. Two tiny general-purpose list components already exist as examples: `BulletList` and `NumberedList`.
+
+Likely next domain components:
 
 - **CalendarDayView** — Events for a given day (from Google Calendar / Home Assistant)
 - **ThingsTodoList** — Things 3 tasks, grouped by area/project
@@ -61,42 +63,64 @@ All components (standard + custom) are registered in a single catalog via `defin
 ```
 Claudette (OpenClaw)
   → generates spec JSON
-  → writes to ~/code/prism/data/<messageId>.json
-  → sends Telegram message: "Here's your briefing [Open in Prism →]"
+  → writes to ~/.openclaw/media/prism/<messageId>.json
+  → sends Telegram message with a Prism link
 
 User taps link
-  → https://<prism-host>/rich/<messageId>
-  → Next.js reads data/<messageId>.json
+  → http(s)://<prism-host>/<messageId>
+  → Next.js reads ~/.openclaw/media/prism/<messageId>.json
   → Renders via json-render + shadcn + custom components
 ```
 
+## Runtime vs Build-Time Rule
+
+This distinction matters:
+
+- **Changing or adding JSON spec files** in `~/.openclaw/media/prism/` does **not** require a rebuild. Prism reads those files at request time.
+- **Changing catalog, registry, or React component code** **does** require rebuilding and restarting the production server, because `next start` serves the compiled app.
+
+Examples:
+- New page at `~/.openclaw/media/prism/foo.json` → no rebuild needed
+- Add `BulletList` component to registry → rebuild + restart required
+- Change styling in `src/components/...` → rebuild + restart required
+
 ## Hosting
 
-Running on a Mac Mini (headless). Needs a public HTTPS URL for Telegram to open pages in its in-app browser. Options being evaluated:
+Running on a Mac Mini (headless).
 
+Current state:
+- Prism runs in **production mode** under launchd
+- LaunchAgent label: `ai.nick.prism`
+- Runner script in repo: `scripts/run-prod.sh`
+- Tailscale hostname works for private access: `http://macmini.pony-rattlesnake.ts.net:60001/<id>`
+
+Important:
+- **Tailscale-only HTTP is fine for Nick's private use and testing**
+- **Telegram Mini Apps / web_app flows require HTTPS**, so a public HTTPS endpoint will still be needed for that phase
+
+Likely HTTPS options when needed:
 - **Cloudflare Tunnel** — simplest, free, no port forwarding needed
-- **Tailscale Funnel** — good for private/trusted access
-
-TBD which one we go with.
+- **Tailscale Funnel** — good if staying closer to the tailnet model
 
 ## Spec Format
 
-Claudette generates specs in the json-render JSONL patch format (RFC 6902 patches, standalone mode). Each spec targets the registered catalog — Claudette can only use components that exist in the catalog.
+The **canonical format** for Prism specs should remain the default json-render format (JSONL patches / flat element-map-oriented workflow), since that is what json-render itself expects and what tuned generation should target.
 
-Example minimal spec (conceptual):
+Prism currently has compatibility code that can accept nested JSON and convert it on read, but treat that as a convenience/fallback — not the primary contract to design around.
 
-```json
-{ "op": "add", "path": "/root", "value": { "type": "Stack", "props": { "direction": "vertical", "gap": "md" } } }
-{ "op": "add", "path": "/elements/0", "value": { "type": "Heading", "props": { "text": "Morning Briefing", "level": "h1" } } }
-{ "op": "add", "path": "/elements/1", "value": { "type": "BriefingCard", "props": { ... } } }
-```
+Each rendered spec still targets the registered catalog — Claudette can only use components that exist in the catalog.
 
 ## Development Notes
 
 - The catalog definition is the source of truth. If a component isn't in the catalog, Claudette can't use it.
-- Each custom component needs: a Zod props schema, a description (this goes into the AI prompt), and an example (helps the AI know how to use it).
+- Each custom component needs: a Zod props schema and a description. The schema defines what props the AI may pass.
+- Runtime component implementations receive `BaseComponentProps<T>` from `@json-render/react`; in practice you define the props schema in the catalog and then use `props` however you want in the component.
 - Keep component props flat and serializable — no functions, no JSX in the spec.
-- The `data/` directory is gitignored (runtime content, not source).
+- `@import` and `@source` do different jobs in Tailwind v4:
+  - `@import` includes CSS files
+  - `@source` tells Tailwind where to scan for class names
+- Important Tailwind v4 gotcha: because `@json-render/shadcn` ships utility classes inside component code, Prism needs `@source "../../node_modules/@json-render/shadcn/dist";` in `src/app/globals.css` so those classes are emitted in the compiled CSS.
+- Runtime content lives outside the repo in `~/.openclaw/media/prism/`.
 
 ## Project Context
 
