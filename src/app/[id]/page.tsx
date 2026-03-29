@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { nestedToFlat } from "@json-render/core";
 import { notFound } from "next/navigation";
 import { PrismRenderer } from "@/components/prism-renderer";
 
@@ -10,7 +11,13 @@ async function loadSpec(id: string) {
 
   try {
     const raw = await fs.readFile(filePath, "utf8");
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+
+    if (parsed?.root && typeof parsed.root === "object" && !parsed?.elements) {
+      return nestedToFlat(parsed.root);
+    }
+
+    return parsed;
   } catch (error) {
     const code = (error as NodeJS.ErrnoException).code;
 
