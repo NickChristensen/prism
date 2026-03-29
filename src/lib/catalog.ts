@@ -1,6 +1,7 @@
 import { defineCatalog } from "@json-render/core";
 import { schema } from "@json-render/react/schema";
 import { shadcnComponentDefinitions } from "@json-render/shadcn/catalog";
+import { z } from "zod";
 
 export const catalog = defineCatalog(schema, {
   components: {
@@ -40,6 +41,20 @@ export const catalog = defineCatalog(schema, {
     ToggleGroup: shadcnComponentDefinitions.ToggleGroup,
     ButtonGroup: shadcnComponentDefinitions.ButtonGroup,
     Pagination: shadcnComponentDefinitions.Pagination,
+    BulletList: {
+      props: z.object({
+        items: z.array(z.string()),
+        className: z.string().optional(),
+      }),
+      description: "Bulleted unordered list of short text items.",
+    },
+    NumberedList: {
+      props: z.object({
+        items: z.array(z.string()),
+        className: z.string().optional(),
+      }),
+      description: "Numbered ordered list of short text items.",
+    },
   },
   actions: {},
 });
