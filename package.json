@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy": "npm run build && launchctl kickstart -k gui/$(id -u)/ai.nick.prism",
+    "sync-prompt": "npx tsx scripts/print-prompt.ts > /Users/louie/.openclaw/workspace-prism/AGENTS.md"
   },
   "dependencies": {
     "@json-render/core": "^0.16.0",
