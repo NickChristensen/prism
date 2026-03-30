@@ -2,7 +2,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { applySpecPatch } from "@json-render/core";
 import { notFound } from "next/navigation";
-import { PrismRenderer } from "@/components/prism-renderer";
+import { PrismRenderer } from "@/components/app/prism-renderer";
 
 const PRISM_MEDIA_DIR = path.join(process.env.HOME ?? "", ".openclaw", "media", "prism");
 

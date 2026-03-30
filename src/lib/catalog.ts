@@ -4,7 +4,7 @@ import { shadcnComponentDefinitions } from "@json-render/shadcn/catalog";
 import {
   bulletListDefinition,
   numberedListDefinition,
-} from "@/components/lists";
+} from "@/components/catalog/lists";
 
 export const catalog = defineCatalog(schema, {
   components: {

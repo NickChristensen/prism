@@ -1,6 +1,6 @@
 import { defineRegistry } from "@json-render/react";
 import { shadcnComponents } from "@json-render/shadcn";
-import { BulletList, NumberedList } from "@/components/lists";
+import { BulletList, NumberedList } from "@/components/catalog/lists";
 import { catalog } from "@/lib/catalog";
 
 export const { registry, handlers, executeAction } = defineRegistry(catalog, {
