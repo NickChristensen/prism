@@ -1,9 +1,22 @@
 import type { BaseComponentProps } from "@json-render/react";
+import { z } from "zod";
 import { cn } from "@/lib/utils";
 
-type ListProps = {
-  items: string[];
-  className?: string;
+export const listPropsSchema = z.object({
+  items: z.array(z.string()),
+  className: z.string().optional(),
+});
+
+type ListProps = z.infer<typeof listPropsSchema>;
+
+export const bulletListDefinition = {
+  props: listPropsSchema,
+  description: "Bulleted unordered list of short text items.",
+};
+
+export const numberedListDefinition = {
+  props: listPropsSchema,
+  description: "Numbered ordered list of short text items.",
 };
 
 export function BulletList({ props }: BaseComponentProps<ListProps>) {

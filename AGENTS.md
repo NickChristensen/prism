@@ -114,6 +114,7 @@ Each rendered spec still targets the registered catalog — Claudette can only u
 
 - The catalog definition is the source of truth. If a component isn't in the catalog, Claudette can't use it.
 - Each custom component needs: a Zod props schema and a description. The schema defines what props the AI may pass.
+- Prefer colocating each custom component's Zod props schema, inferred TypeScript props type, and exported catalog definition in the component file itself, then importing that definition into `src/lib/catalog.ts`. This keeps the AI-facing contract and runtime props in one place and avoids schema/type drift.
 - Runtime component implementations receive `BaseComponentProps<T>` from `@json-render/react`; in practice you define the props schema in the catalog and then use `props` however you want in the component.
 - Keep component props flat and serializable — no functions, no JSX in the spec.
 - `@import` and `@source` do different jobs in Tailwind v4:
