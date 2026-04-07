@@ -5,6 +5,7 @@ import {
   bulletListDefinition,
   numberedListDefinition,
 } from "@/components/catalog/lists";
+import { textDefinition } from "@/components/catalog/text";
 
 export const catalog = defineCatalog(schema, {
   components: {
@@ -20,7 +21,7 @@ export const catalog = defineCatalog(schema, {
     Carousel: shadcnComponentDefinitions.Carousel,
     Table: shadcnComponentDefinitions.Table,
     Heading: shadcnComponentDefinitions.Heading,
-    Text: shadcnComponentDefinitions.Text,
+    Text: textDefinition,
     Image: shadcnComponentDefinitions.Image,
     Avatar: shadcnComponentDefinitions.Avatar,
     Badge: shadcnComponentDefinitions.Badge,
