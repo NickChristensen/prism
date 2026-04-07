@@ -1,10 +1,8 @@
 import type { BaseComponentProps } from "@json-render/react";
 import { z } from "zod";
-import { cn } from "@/lib/utils";
 
 export const listPropsSchema = z.object({
   items: z.array(z.string()),
-  className: z.string().optional(),
 });
 
 type ListProps = z.infer<typeof listPropsSchema>;
@@ -21,7 +19,7 @@ export const numberedListDefinition = {
 
 export function BulletList({ props }: BaseComponentProps<ListProps>) {
   return (
-    <ul className={cn("list-disc space-y-2 pl-5 text-sm", props.className)}>
+    <ul className="list-disc space-y-2 pl-5 text-sm">
       {props.items.map((item, index) => (
         <li key={index}>{item}</li>
       ))}
@@ -31,7 +29,7 @@ export function BulletList({ props }: BaseComponentProps<ListProps>) {
 
 export function NumberedList({ props }: BaseComponentProps<ListProps>) {
   return (
-    <ol className={cn("list-decimal space-y-2 pl-5 text-sm", props.className)}>
+    <ol className="list-decimal space-y-2 pl-5 text-sm">
       {props.items.map((item, index) => (
         <li key={index}>{item}</li>
       ))}
