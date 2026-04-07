@@ -5,7 +5,17 @@ import {
   bulletListDefinition,
   numberedListDefinition,
 } from "@/components/catalog/lists";
-import { textDefinition } from "@/components/catalog/text";
+import {
+  textDefinition,
+} from "@/components/catalog/text";
+import {
+  codeDefinition,
+  delDefinition,
+  emDefinition,
+  inlineTextDefinition,
+  markDefinition,
+  strongDefinition,
+} from "@/components/catalog/text-inline";
 
 export const catalog = defineCatalog(schema, {
   components: {
@@ -22,6 +32,12 @@ export const catalog = defineCatalog(schema, {
     Table: shadcnComponentDefinitions.Table,
     Heading: shadcnComponentDefinitions.Heading,
     Text: textDefinition,
+    InlineText: inlineTextDefinition,
+    Strong: strongDefinition,
+    Em: emDefinition,
+    Code: codeDefinition,
+    Mark: markDefinition,
+    Del: delDefinition,
     Image: shadcnComponentDefinitions.Image,
     Avatar: shadcnComponentDefinitions.Avatar,
     Badge: shadcnComponentDefinitions.Badge,

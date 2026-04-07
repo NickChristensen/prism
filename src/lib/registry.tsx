@@ -2,6 +2,14 @@ import { defineRegistry } from "@json-render/react";
 import { shadcnComponents } from "@json-render/shadcn";
 import { BulletList, NumberedList } from "@/components/catalog/lists";
 import { Text } from "@/components/catalog/text";
+import {
+  Code,
+  Del,
+  Em,
+  InlineText,
+  Mark,
+  Strong,
+} from "@/components/catalog/text-inline";
 import { catalog } from "@/lib/catalog";
 
 export const { registry, handlers, executeAction } = defineRegistry(catalog, {
@@ -19,6 +27,12 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     Table: shadcnComponents.Table,
     Heading: shadcnComponents.Heading,
     Text,
+    InlineText,
+    Strong,
+    Em,
+    Code,
+    Mark,
+    Del,
     Image: shadcnComponents.Image,
     Avatar: shadcnComponents.Avatar,
     Badge: shadcnComponents.Badge,
