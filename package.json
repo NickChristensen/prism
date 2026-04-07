@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "deploy": "npm run build && launchctl kickstart -k gui/$(id -u)/ai.nick.prism",
-    "sync-prompt": "npx tsx scripts/print-prompt.ts > /Users/louie/.openclaw/workspace-prism/AGENTS.md"
+    "print-prompt": "npx tsx scripts/print-prompt.ts",
+    "sync-prompt": "npx tsx scripts/sync-prompt.ts"
   },
   "dependencies": {
     "@json-render/core": "^0.16.0",
