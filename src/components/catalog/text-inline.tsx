@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import { Children, type ReactNode } from "react";
 import { z } from "zod";
 import type { BaseComponentProps } from "@json-render/react";
+import { shadcnComponents, shadcnComponentDefinitions } from "@json-render/shadcn";
 
 export const dynamicTextValueSchema: z.ZodType = z.lazy(() =>
   z.union([
@@ -44,7 +45,7 @@ export function renderInlineContent(
   text: unknown,
   children?: ReactNode,
 ): ReactNode {
-  if (children) {
+  if (Children.count(children) > 0) {
     return children;
   }
 
@@ -76,14 +77,14 @@ const inlineContainerPropsSchema = z.object({
 
 type InlineContainerProps = z.infer<typeof inlineContainerPropsSchema>;
 
-export function Strong({
+export function InlineBold({
   props,
   children,
 }: BaseComponentProps<InlineContainerProps>) {
   return <strong>{renderInlineContent(props.text, children)}</strong>;
 }
 
-export const strongDefinition = {
+export const inlineBoldDefinition = {
   props: inlineContainerPropsSchema,
   slots: ["default"],
   description:
@@ -93,14 +94,14 @@ export const strongDefinition = {
   },
 };
 
-export function Em({
+export function InlineItalic({
   props,
   children,
 }: BaseComponentProps<InlineContainerProps>) {
   return <em>{renderInlineContent(props.text, children)}</em>;
 }
 
-export const emDefinition = {
+export const inlineItalicDefinition = {
   props: inlineContainerPropsSchema,
   slots: ["default"],
   description:
@@ -110,7 +111,7 @@ export const emDefinition = {
   },
 };
 
-export function Code({
+export function InlineCode({
   props,
   children,
 }: BaseComponentProps<InlineContainerProps>) {
@@ -121,7 +122,7 @@ export function Code({
   );
 }
 
-export const codeDefinition = {
+export const inlineCodeDefinition = {
   props: inlineContainerPropsSchema,
   slots: ["default"],
   description:
@@ -131,14 +132,14 @@ export const codeDefinition = {
   },
 };
 
-export function Mark({
+export function InlineHighlight({
   props,
   children,
 }: BaseComponentProps<InlineContainerProps>) {
   return <mark>{renderInlineContent(props.text, children)}</mark>;
 }
 
-export const markDefinition = {
+export const inlineHighlightDefinition = {
   props: inlineContainerPropsSchema,
   slots: ["default"],
   description:
@@ -148,19 +149,47 @@ export const markDefinition = {
   },
 };
 
-export function Del({
+export function InlineStrikethrough({
   props,
   children,
 }: BaseComponentProps<InlineContainerProps>) {
   return <del>{renderInlineContent(props.text, children)}</del>;
 }
 
-export const delDefinition = {
+export const inlineStrikethroughDefinition = {
   props: inlineContainerPropsSchema,
   slots: ["default"],
   description:
     "Deleted or struck-through inline text. Use either text or nested inline children. Do not provide both.",
   example: {
     text: "deleted",
+  },
+};
+
+const inlineLinkPropsSchema = shadcnComponentDefinitions.Link.props;
+
+type InlineLinkProps = z.infer<typeof inlineLinkPropsSchema>;
+
+export function InlineLink({
+  props,
+  emit,
+  on,
+}: BaseComponentProps<InlineLinkProps>) {
+  return (
+    <shadcnComponents.Link
+      props={props}
+      emit={emit}
+      on={on}
+    />
+  );
+}
+
+export const inlineLinkDefinition = {
+  props: inlineLinkPropsSchema,
+  description:
+    "Inline hyperlink. Same props and behavior as Link, but intended for use inside Text.",
+  example: {
+    href: "https://example.com",
+    label: "Read more",
   },
 };

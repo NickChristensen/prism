@@ -3,12 +3,13 @@ import { shadcnComponents } from "@json-render/shadcn";
 import { BulletList, NumberedList } from "@/components/catalog/lists";
 import { Text } from "@/components/catalog/text";
 import {
-  Code,
-  Del,
-  Em,
+  InlineBold,
+  InlineCode,
+  InlineHighlight,
+  InlineItalic,
+  InlineLink,
+  InlineStrikethrough,
   InlineText,
-  Mark,
-  Strong,
 } from "@/components/catalog/text-inline";
 import { catalog } from "@/lib/catalog";
 
@@ -28,11 +29,12 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     Heading: shadcnComponents.Heading,
     Text,
     InlineText,
-    Strong,
-    Em,
-    Code,
-    Mark,
-    Del,
+    InlineBold,
+    InlineItalic,
+    InlineCode,
+    InlineHighlight,
+    InlineStrikethrough,
+    InlineLink,
     Image: shadcnComponents.Image,
     Avatar: shadcnComponents.Avatar,
     Badge: shadcnComponents.Badge,

@@ -9,12 +9,13 @@ import {
   textDefinition,
 } from "@/components/catalog/text";
 import {
-  codeDefinition,
-  delDefinition,
-  emDefinition,
+  inlineBoldDefinition,
+  inlineCodeDefinition,
+  inlineHighlightDefinition,
+  inlineItalicDefinition,
+  inlineLinkDefinition,
+  inlineStrikethroughDefinition,
   inlineTextDefinition,
-  markDefinition,
-  strongDefinition,
 } from "@/components/catalog/text-inline";
 
 export const catalog = defineCatalog(schema, {
@@ -33,11 +34,12 @@ export const catalog = defineCatalog(schema, {
     Heading: shadcnComponentDefinitions.Heading,
     Text: textDefinition,
     InlineText: inlineTextDefinition,
-    Strong: strongDefinition,
-    Em: emDefinition,
-    Code: codeDefinition,
-    Mark: markDefinition,
-    Del: delDefinition,
+    InlineBold: inlineBoldDefinition,
+    InlineItalic: inlineItalicDefinition,
+    InlineCode: inlineCodeDefinition,
+    InlineHighlight: inlineHighlightDefinition,
+    InlineStrikethrough: inlineStrikethroughDefinition,
+    InlineLink: inlineLinkDefinition,
     Image: shadcnComponentDefinitions.Image,
     Avatar: shadcnComponentDefinitions.Avatar,
     Badge: shadcnComponentDefinitions.Badge,
