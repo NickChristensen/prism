@@ -4,9 +4,9 @@ import { Geist, Geist_Mono, Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const outfitHeading = Outfit({subsets:['latin'],variable:'--font-heading'});
+const outfitHeading = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,7 +54,15 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable, outfitHeading.variable)}
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        inter.variable,
+        outfitHeading.variable,
+        "font-sans",
+      )}
     >
       <body className="min-h-full flex flex-col p-2 pb-4">
         <Script id="theme-sync" strategy="beforeInteractive">
