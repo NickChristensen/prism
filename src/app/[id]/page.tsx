@@ -4,6 +4,8 @@ import { applySpecPatch, type JsonPatch } from "@json-render/core";
 import { notFound } from "next/navigation";
 import { PrismRenderer } from "@/components/app/prism-renderer";
 
+export const dynamic = "force-dynamic";
+
 const PRISM_MEDIA_DIR = path.join(
   process.env.HOME ?? "",
   ".openclaw",
