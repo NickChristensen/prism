@@ -1,5 +1,6 @@
 import { defineRegistry } from "@json-render/react";
 import { shadcnComponents } from "@json-render/shadcn";
+import { Icon } from "@/components/catalog/icon-client";
 import { BulletList, NumberedList } from "@/components/catalog/lists";
 import { Text } from "@/components/catalog/text";
 import {
@@ -28,6 +29,7 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     Table: shadcnComponents.Table,
     Heading: shadcnComponents.Heading,
     Text,
+    Icon,
     InlineText,
     InlineBold,
     InlineItalic,

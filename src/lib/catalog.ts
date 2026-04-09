@@ -2,6 +2,9 @@ import { defineCatalog } from "@json-render/core";
 import { schema } from "@json-render/react/schema";
 import { shadcnComponentDefinitions } from "@json-render/shadcn/catalog";
 import {
+  iconDefinition,
+} from "@/components/catalog/icon";
+import {
   bulletListDefinition,
   numberedListDefinition,
 } from "@/components/catalog/lists";
@@ -33,6 +36,7 @@ export const catalog = defineCatalog(schema, {
     Table: shadcnComponentDefinitions.Table,
     Heading: shadcnComponentDefinitions.Heading,
     Text: textDefinition,
+    Icon: iconDefinition,
     InlineText: inlineTextDefinition,
     InlineBold: inlineBoldDefinition,
     InlineItalic: inlineItalicDefinition,
