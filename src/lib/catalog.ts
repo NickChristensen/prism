@@ -1,22 +1,15 @@
 import { defineCatalog } from "@json-render/core";
 import { schema } from "@json-render/react/schema";
 import { shadcnComponentDefinitions } from "@json-render/shadcn/catalog";
-import {
-  calendarAgendaDefinition,
-} from "@/components/catalog/calendar-agenda";
-import {
-  calendarEventDefinition,
-} from "@/components/catalog/calendar-event";
-import {
-  iconDefinition,
-} from "@/components/catalog/icon";
+import { calendarAgendaDefinition } from "@/components/catalog/calendar-agenda";
+import { calendarEventDefinition } from "@/components/catalog/calendar-event";
+import { iconDefinition } from "@/components/catalog/icon";
 import {
   bulletListDefinition,
   numberedListDefinition,
 } from "@/components/catalog/lists";
-import {
-  textDefinition,
-} from "@/components/catalog/text";
+import { textDefinition } from "@/components/catalog/text";
+import { todoListDefinition } from "@/components/catalog/todo-list";
 import {
   inlineBoldDefinition,
   inlineCodeDefinition,
@@ -77,6 +70,7 @@ export const catalog = defineCatalog(schema, {
     Pagination: shadcnComponentDefinitions.Pagination,
     BulletList: bulletListDefinition,
     NumberedList: numberedListDefinition,
+    TodoList: todoListDefinition,
   },
   actions: {},
 });
