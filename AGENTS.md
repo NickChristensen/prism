@@ -122,6 +122,7 @@ Each rendered spec still targets the registered catalog — Claudette can only u
   - `@import` includes CSS files
   - `@source` tells Tailwind where to scan for class names
 - Important Tailwind v4 gotcha: because `@json-render/shadcn` ships utility classes inside component code, Prism needs `@source "../../node_modules/@json-render/shadcn/dist";` in `src/app/globals.css` so those classes are emitted in the compiled CSS.
+- `npm run build` and anything that invokes it may need network access because Next can fetch remote assets such as Google Fonts during the build. Ask for network permissions before running those commands.
 - Runtime content lives outside the repo in `~/.openclaw/media/prism/`.
 
 ## Project Context
