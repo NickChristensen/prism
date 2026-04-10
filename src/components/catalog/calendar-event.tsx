@@ -1,6 +1,6 @@
 import { Clock, MapPin } from "lucide-react";
 import type { BaseComponentProps } from "@json-render/react";
-import { iso, z } from "zod";
+import { z } from "zod";
 import { cn } from "@/lib/utils";
 
 const HOUR_HEIGHT = 64;
@@ -42,11 +42,11 @@ function formatTime(value: string) {
 }
 
 export const calendarEventPropsSchema = z.object({
-  title: z.string().min(1),
-  startTime: z.iso.datetime(),
-  endTime: z.iso.datetime(),
+  summary: z.string().min(1),
+  start: z.iso.datetime(),
+  end: z.iso.datetime(),
   location: z.string().optional(),
-  color: z.string().regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/),
+  backgroundColor: z.string().regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/),
 });
 
 export type CalendarEventProps = z.infer<typeof calendarEventPropsSchema>;
@@ -54,25 +54,25 @@ export type CalendarEventProps = z.infer<typeof calendarEventPropsSchema>;
 export const calendarEventDefinition = {
   props: calendarEventPropsSchema,
   description:
-    "Use for a single scheduled event when you want to show one appointment, meeting, class, reminder, or reservation on its own. Best when the UI needs details for one event rather than a sequence of events. Provide ISO startTime and endTime plus the source calendar color as a hex string; the component formats the time range and derives its own visual color shades.",
+    "Use for a single scheduled event when you want to show one appointment, meeting, reminder, or reservation on its own. Best when the UI needs details for one event rather than a sequence of events. Provide ISO start and end, plus the calendar or event's backgroundColor as a hex string.",
   example: {
-    title: "Project Sync",
-    startTime: "2026-04-09T09:00:00-05:00",
-    endTime: "2026-04-09T09:30:00-05:00",
+    summary: "Project Sync",
+    start: "2026-04-09T09:00:00-05:00",
+    end: "2026-04-09T09:30:00-05:00",
     location: "Zoom",
-    color: "#0088ff",
+    backgroundColor: "#0088ff",
   },
 };
 
 export function CalendarEventView({
-  title,
-  startTime,
-  endTime,
+  summary,
+  start,
+  end,
   location,
-  color,
+  backgroundColor,
 }: CalendarEventProps) {
-  const height = getHeight(getEventDuration(startTime, endTime));
-  const shades = getShadeScale(color);
+  const height = getHeight(getEventDuration(start, end));
+  const shades = getShadeScale(backgroundColor);
   const iconWrapperClasses = "flex items-center gap-0.5";
   const iconClasses = "w-2.5 h-2.5 shrink-0";
   const layoutInline = height < 48;
@@ -100,11 +100,11 @@ export function CalendarEventView({
           layoutInline && "flex gap-2 items-center",
         )}
       >
-        <p className="text-xs/snug font-bold">{title}</p>
+        <p className="text-xs/snug font-bold">{summary}</p>
         <div className={iconWrapperClasses}>
           <Clock className={iconClasses} />
           <p className="text-xs/snug">
-            {formatTime(startTime)} - {formatTime(endTime)}
+            {formatTime(start)} - {formatTime(end)}
           </p>
         </div>
       </div>

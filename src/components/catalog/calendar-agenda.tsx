@@ -41,23 +41,21 @@ type CalendarAgendaProps = z.infer<typeof calendarAgendaPropsSchema>;
 export const calendarAgendaDefinition = {
   props: calendarAgendaPropsSchema,
   description:
-    "Use for a chronological set of events when you want to show a schedule, agenda, or multiple calendar events rather than a single event. Best for portraying a schedule, plans, or the day's agenda. Pass an events array with ISO datetimes; the component sorts events by start time and inserts gap markers between them automatically.",
+    "Use for a chronological set of events when you want to show a schedule, agenda, or multiple calendar events rather than a single event. Pass an events array with ISO datetimes; the component sorts events by start time and inserts gap markers between them automatically.",
   example: {
     events: [
       {
-        id: "evt_1",
-        title: "Project Sync",
-        startTime: "2026-04-09T09:00:00-05:00",
-        endTime: "2026-04-09T09:30:00-05:00",
+        summary: "Project Sync",
+        start: "2026-04-09T09:00:00-05:00",
+        end: "2026-04-09T09:30:00-05:00",
         location: "Zoom",
-        color: "#0088ff",
+        backgroundColor: "#0088ff",
       },
       {
-        id: "evt_2",
-        title: "Lunch",
-        startTime: "2026-04-09T12:00:00-05:00",
-        endTime: "2026-04-09T13:00:00-05:00",
-        color: "#16a34a",
+        summary: "Lunch",
+        start: "2026-04-09T12:00:00-05:00",
+        end: "2026-04-09T13:00:00-05:00",
+        backgroundColor: "#16a34a",
       },
     ],
   },
@@ -78,7 +76,7 @@ export function CalendarAgenda({
 }: BaseComponentProps<CalendarAgendaProps>) {
   const sortedEvents = [...props.events].sort(
     (left, right) =>
-      toDate(left.startTime).getTime() - toDate(right.startTime).getTime(),
+      toDate(left.start).getTime() - toDate(right.start).getTime(),
   );
 
   const items: Array<
@@ -89,10 +87,7 @@ export function CalendarAgenda({
   sortedEvents.forEach((event, index) => {
     if (index > 0) {
       const previousEvent = sortedEvents[index - 1];
-      const gapMinutes = getMinutesBetween(
-        previousEvent.endTime,
-        event.startTime,
-      );
+      const gapMinutes = getMinutesBetween(previousEvent.end, event.start);
 
       if (gapMinutes > 0) {
         items.push({
@@ -115,7 +110,7 @@ export function CalendarAgenda({
           <GhostGap key={`gap-${index}`} minutes={item.minutes} />
         ) : (
           <CalendarEventView
-            key={`${item.event.startTime}-${item.event.title}-${index}`}
+            key={`${item.event.start}-${item.event.summary}-${index}`}
             {...item.event}
           />
         ),
