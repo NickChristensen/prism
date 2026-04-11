@@ -1,26 +1,28 @@
 import Script from "next/script";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Outfit } from "next/font/google";
+import { Geist_Mono, Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const outfitHeading = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const outfitHeading = Outfit({
   subsets: ["latin"],
+  variable: "--font-outfit-heading",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
   title: "Prism",
-  description: "Prism renders rich views for OpenClaw. Open a Prism link with an ID to see a generated page.",
+  description:
+    "Prism renders rich views for OpenClaw. Open a Prism link with an ID to see a generated page.",
 };
 
 const themeScript = `
@@ -57,11 +59,9 @@ export default function RootLayout({
       className={cn(
         "h-full",
         "antialiased",
-        geistSans.variable,
         geistMono.variable,
         inter.variable,
         outfitHeading.variable,
-        "font-sans",
       )}
     >
       <body className="min-h-full flex flex-col p-2 pb-4">
