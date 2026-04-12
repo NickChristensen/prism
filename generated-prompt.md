@@ -65,7 +65,7 @@ AVAILABLE COMPONENTS (49):
 - Table: { columns: Array<string>, rows: Array<Array<string>>, caption?: string } - Data table. columns: header labels. rows: 2D array of cell strings, e.g. [["Alice","admin"],["Bob","user"]].
 - Heading: { text: string, level?: "h1" | "h2" | "h3" | "h4" } - Heading text (h1-h4)
 - Text: { text?: unknown, variant?: "body" | "caption" | "muted" | "lead" | "code" } - Paragraph text. For simple text, set props.text. For inline formatting, add child elements in the default slot, usually alternating InlineText with inline components like InlineBold, InlineItalic, InlineCode, InlineHighlight, InlineStrikethrough, and InlineLink. Keep children inline-only; do not place block components inside Text. [accepts children]
-- CalendarAgenda: { events: Array<{ summary: string, start: string, end: string, location?: string, backgroundColor: string }> } - Use for a chronological set of events when you want to show a schedule, agenda, or multiple calendar events rather than a single event. Pass an events array with ISO datetimes; the component sorts events by start time and inserts gap markers between them automatically.
+- CalendarAgenda: { events: Array<{ summary: string, start: string, end: string, location?: string, backgroundColor: string }> } - Use for a chronological set of events when you want to show a schedule, agenda, or multiple calendar events rather than a single event. Pass an events array with ISO datetimes; Events are rendered grouped by day, and sorted chronologically.
 - CalendarEvent: { summary: string, start: string, end: string, location?: string, backgroundColor: string } - Use for a single scheduled event when you want to show one appointment, meeting, reminder, or reservation on its own. Best when the UI needs details for one event rather than a sequence of events. Provide ISO start and end, plus the calendar or event's backgroundColor as a hex string.
 - Icon: { name: string, size?: number, strokeWidth?: number, absoluteStrokeWidth?: boolean, color?: string, className?: string, label?: string } - Lucide icon rendered from a canonical kebab-case icon name such as calendar, mail, chart-column, dumbbell, or triangle-alert.
 - InlineText: { text: unknown } - Plain inline text fragment for use inside Text or other inline components.
@@ -100,7 +100,7 @@ AVAILABLE COMPONENTS (49):
 - Pagination: { totalPages: number, page?: number } - Page navigation. Use { $bindState } on page for current page number. [events: change]
 - BulletList: { items: Array<string> } - Bulleted unordered list of short text items.
 - NumberedList: { items: Array<string> } - Numbered ordered list of short text items.
-- TodoList: { title?: string, items: Array<{ uuid: string, title: string, tags?: Array<string>, project?: string, area?: string, carried_over?: number, has_notes?: boolean }> } - Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag.
+- TodoList: { items: Array<{ uuid: string, title: string, tags?: Array<string>, project?: string, area?: string, carried_over?: number, has_notes?: boolean }> } - Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag.
 
 AVAILABLE ACTIONS:
 
