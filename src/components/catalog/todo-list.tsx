@@ -2,9 +2,8 @@
 
 import type { BaseComponentProps } from "@json-render/react";
 import { z } from "zod";
-import { cn } from "@/lib/utils";
 import { File, Square } from "lucide-react";
-import { jsonRenderShadcn } from "@/components/app/json-render-shadcn";
+import { Badge } from "../ui/badge";
 
 export const todoListItemSchema = z.object({
   uuid: z.string(),
@@ -29,31 +28,34 @@ export const todoListDefinition = {
 };
 
 export function TodoList({ props }: BaseComponentProps<TodoListProps>) {
-  const { Badge, Text } = jsonRenderShadcn;
-  const iconClasses = "opacity-30 shrink-0";
+  const dimmedIconClasses = "opacity-30 shrink-0";
 
   return (
     <div className="flex flex-col gap-2">
       {props.items.map((item) => (
         <div key={item.uuid} className="flex gap-2 items-center">
-          <Square size={14} className={iconClasses} />
-          <div>
+          <Square size={14} className={dimmedIconClasses} />
+          <div className="shrink overflow-hidden">
             <div className="flex items-center gap-2">
-              <Text text={item.title} variant="body" />
-              {item.has_notes && <File size={12} className={iconClasses} />}
+              <p className="text-sm truncate">{item.title}</p>
+              {item.has_notes && (
+                <File size={12} className={dimmedIconClasses} />
+              )}
               {item.tags &&
                 item.tags.map((tag) => (
-                  <Badge key={tag} text={tag} variant="outline" />
+                  <Badge
+                    key={tag}
+                    variant="outline"
+                    className="text-muted-foreground shrink-0"
+                  >
+                    {tag}
+                  </Badge>
                 ))}
             </div>
-
             {item.project || item.area ? (
-              <div className="text-muted-foreground">
-                <Text
-                  text={item.project || item.area || ""}
-                  variant="caption"
-                />
-              </div>
+              <p className="text-xs text-muted-foreground">
+                {item.project || item.area}
+              </p>
             ) : null}
           </div>
         </div>
