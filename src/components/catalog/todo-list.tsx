@@ -2,6 +2,7 @@
 
 import type { BaseComponentProps } from "@json-render/react";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 import { File, Square } from "lucide-react";
 import { Badge } from "../ui/badge";
 
@@ -13,6 +14,7 @@ export const todoListItemSchema = z.object({
   area: z.string().optional(),
   carried_over: z.number().int().nonnegative().optional(),
   has_notes: z.boolean().optional(),
+  highlighted: z.boolean().optional(),
 });
 
 export const todoListPropsSchema = z.object({
@@ -24,7 +26,7 @@ export type TodoListProps = z.infer<typeof todoListPropsSchema>;
 export const todoListDefinition = {
   props: todoListPropsSchema,
   description:
-    "Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag.",
+    "Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag. Mark items as highlighted to visually distinguish and call attention to them.",
 };
 
 export function TodoList({ props }: BaseComponentProps<TodoListProps>) {
@@ -33,7 +35,13 @@ export function TodoList({ props }: BaseComponentProps<TodoListProps>) {
   return (
     <div className="flex flex-col gap-2">
       {props.items.map((item) => (
-        <div key={item.uuid} className="flex gap-2 items-center">
+        <div
+          key={item.uuid}
+          className={cn(
+            "flex gap-2 items-center rounded-sm",
+            item.highlighted && "bg-primary/25 -mx-2 px-2 -my-1 py-1",
+          )}
+        >
           <Square size={14} className={dimmedIconClasses} />
           <div className="shrink overflow-hidden">
             <div className="flex items-center gap-2">

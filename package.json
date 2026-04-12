@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "predeploy": "npm run sync-prompt",
     "deploy": "npm run build && launchctl kickstart -k gui/$(id -u)/ai.nick.prism",
     "print-prompt": "npx tsx scripts/print-prompt.ts",
     "sync-prompt": "npx tsx scripts/sync-prompt.ts"
