@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import Link from "next/link";
+import { Card } from "@/components/ui/card";
 
 export const dynamic = "force-dynamic";
 
@@ -44,8 +45,8 @@ export default async function HomePage() {
   const routes = await listSpecRoutes();
 
   return (
-    <main className="min-h-screen bg-background px-6 py-16 text-foreground">
-      <div className="mx-auto flex max-w-3xl flex-col gap-8">
+    <main className="px-6 py-16">
+      <Card className="mx-auto flex max-w-3xl flex-col gap-8 p-8">
         <div className="flex flex-col gap-3">
           <h1 className="text-2xl font-semibold tracking-tight">Prism</h1>
           <p className="max-w-xl text-sm text-muted-foreground">
@@ -83,7 +84,7 @@ export default async function HomePage() {
             </ul>
           )}
         </section>
-      </div>
+      </Card>
     </main>
   );
 }
