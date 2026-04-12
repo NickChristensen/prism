@@ -16,6 +16,7 @@ export const todoListItemSchema = z.object({
 });
 
 export const todoListPropsSchema = z.object({
+  title: z.string().optional(),
   items: z.array(todoListItemSchema),
 });
 
@@ -31,35 +32,42 @@ export function TodoList({ props }: BaseComponentProps<TodoListProps>) {
   const dimmedIconClasses = "opacity-30 shrink-0";
 
   return (
-    <div className="flex flex-col gap-2">
-      {props.items.map((item) => (
-        <div key={item.uuid} className="flex gap-2 items-center">
-          <Square size={14} className={dimmedIconClasses} />
-          <div className="shrink overflow-hidden">
-            <div className="flex items-center gap-2">
-              <p className="text-sm truncate">{item.title}</p>
-              {item.has_notes && (
-                <File size={12} className={dimmedIconClasses} />
-              )}
-              {item.tags &&
-                item.tags.map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant="outline"
-                    className="text-muted-foreground shrink-0"
-                  >
-                    {tag}
-                  </Badge>
-                ))}
+    <>
+      {props.title && (
+        <h3 className="text-xl font-heading font-medium mb-5 pl-5">
+          {props.title}
+        </h3>
+      )}
+      <div className="flex flex-col gap-2">
+        {props.items.map((item) => (
+          <div key={item.uuid} className="flex gap-2 items-center">
+            <Square size={14} className={dimmedIconClasses} />
+            <div className="shrink overflow-hidden">
+              <div className="flex items-center gap-2">
+                <p className="text-sm truncate">{item.title}</p>
+                {item.has_notes && (
+                  <File size={12} className={dimmedIconClasses} />
+                )}
+                {item.tags &&
+                  item.tags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="outline"
+                      className="text-muted-foreground shrink-0"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+              </div>
+              {item.project || item.area ? (
+                <p className="text-xs text-muted-foreground">
+                  {item.project || item.area}
+                </p>
+              ) : null}
             </div>
-            {item.project || item.area ? (
-              <p className="text-xs text-muted-foreground">
-                {item.project || item.area}
-              </p>
-            ) : null}
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
 }

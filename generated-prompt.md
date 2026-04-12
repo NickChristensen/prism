@@ -100,7 +100,7 @@ AVAILABLE COMPONENTS (49):
 - Pagination: { totalPages: number, page?: number } - Page navigation. Use { $bindState } on page for current page number. [events: change]
 - BulletList: { items: Array<string> } - Bulleted unordered list of short text items.
 - NumberedList: { items: Array<string> } - Numbered ordered list of short text items.
-- TodoList: { items: Array<{ uuid: string, title: string, tags?: Array<string>, project?: string, area?: string, carried_over?: number, has_notes?: boolean }> } - Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag.
+- TodoList: { title?: string, items: Array<{ uuid: string, title: string, tags?: Array<string>, project?: string, area?: string, carried_over?: number, has_notes?: boolean }> } - Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag.
 
 AVAILABLE ACTIONS:
 
