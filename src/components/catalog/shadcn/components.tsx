@@ -114,10 +114,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  inlineCodeClass,
-  renderInlineContent,
-} from "@/lib/text";
+import { inlineCodeClass, renderInlineContent } from "@/lib/text";
 import { cn } from "@/lib/utils";
 
 import { type ShadcnProps } from "./catalog";
@@ -480,12 +477,26 @@ export const shadcnComponents = {
             : "text-lg font-semibold";
 
     if (level === "h1")
-      return <h1 className={`${headingClass} text-left`}>{props.text}</h1>;
+      return (
+        <h1 className={`${headingClass} text-left font-heading`}>
+          {props.text}
+        </h1>
+      );
     if (level === "h3")
-      return <h3 className={`${headingClass} text-left`}>{props.text}</h3>;
+      return (
+        <h3 className={`${headingClass} text-left font-heading`}>
+          {props.text}
+        </h3>
+      );
     if (level === "h4")
-      return <h4 className={`${headingClass} text-left`}>{props.text}</h4>;
-    return <h2 className={`${headingClass} text-left`}>{props.text}</h2>;
+      return (
+        <h4 className={`${headingClass} text-left font-heading`}>
+          {props.text}
+        </h4>
+      );
+    return (
+      <h2 className={`${headingClass} text-left font-heading`}>{props.text}</h2>
+    );
   },
 
   Text: ({
