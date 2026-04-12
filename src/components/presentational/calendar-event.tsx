@@ -77,14 +77,14 @@ export function CalendarEvent({
 
       <div
         className={cn(
-          "pl-2 grow shrink-0",
+          "pl-2 grow shrink-0 text-xs/snug",
           layoutInline && "flex gap-2 items-center",
         )}
       >
-        <p className="text-xs/snug font-bold">{summary}</p>
+        <p className="font-bold">{summary}</p>
         <div className={iconWrapperClasses}>
           <Clock className={iconClasses} />
-          <p className="text-xs/snug">
+          <p>
             {formatTime(start)} - {formatTime(end)}
           </p>
         </div>
@@ -98,7 +98,7 @@ export function CalendarEvent({
           )}
         >
           <MapPin className={iconClasses} />
-          <p className="text-xs/snug truncate">{location.split("\n")[0]}</p>
+          <p className="truncate">{location.split("\n")[0]}</p>
         </div>
       )}
     </div>
