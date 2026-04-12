@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run print-prompt > generated-prompt.md",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
