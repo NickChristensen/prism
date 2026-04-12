@@ -64,7 +64,7 @@ export default function RootLayout({
         outfitHeading.variable,
       )}
     >
-      <body className="min-h-full flex flex-col p-2 pb-4">
+      <body className="min-h-full flex flex-col p-4 pb-8">
         <Script id="theme-sync" strategy="beforeInteractive">
           {themeScript}
         </Script>
