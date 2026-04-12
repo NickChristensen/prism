@@ -49,7 +49,7 @@ export function CalendarEvent({
   const layoutInline = allDay || height < 48;
   return (
     <div
-      className="rounded-lg overflow-hidden flex p-2 border"
+      className="rounded-lg overflow-hidden flex p-2 border text-xs/snug"
       style={{
         borderColor: shades.border,
         backgroundColor: shades.background,
@@ -64,7 +64,7 @@ export function CalendarEvent({
 
       <div
         className={cn(
-          "pl-2 grow shrink-0 text-xs/snug",
+          "pl-2 grow shrink-0",
           layoutInline && "flex gap-2 items-center",
         )}
       >
