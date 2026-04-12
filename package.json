@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "npm run print-prompt > generated-prompt.md",
     "build": "next build",
+    "postbuild": "npm run print-prompt > generated-prompt.md",
     "start": "next start",
     "lint": "eslint",
     "predeploy": "npm run sync-prompt",

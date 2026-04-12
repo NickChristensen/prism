@@ -38,7 +38,7 @@ export function TodoList({ props }: BaseComponentProps<TodoListProps>) {
         <div
           key={item.uuid}
           className={cn(
-            "flex gap-2 items-center rounded-sm",
+            "flex gap-2 items-center rounded-md",
             item.highlighted && "bg-primary/25 -mx-2 px-2 -my-1 py-1",
           )}
         >

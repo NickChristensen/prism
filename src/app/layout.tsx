@@ -59,9 +59,9 @@ export default function RootLayout({
       className={cn(
         "h-full",
         "antialiased",
-        geistMono.variable,
         inter.variable,
         outfitHeading.variable,
+        geistMono.variable,
       )}
     >
       <body className="min-h-full flex flex-col p-4 pb-8">
