@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import {
   useBoundProp,
   useStateBinding,
@@ -105,7 +105,6 @@ import {
   Tabs as TabsPrimitive,
   TabsList,
   TabsTrigger,
-  TabsContent,
 } from "@/components/ui/tabs";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -115,6 +114,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  inlineCodeClass,
+  renderInlineContent,
+} from "@/lib/text";
 import { cn } from "@/lib/utils";
 
 import { type ShadcnProps } from "./catalog";
@@ -485,7 +488,11 @@ export const shadcnComponents = {
     return <h2 className={`${headingClass} text-left`}>{props.text}</h2>;
   },
 
-  Text: ({ props }: BaseComponentProps<ShadcnProps<"Text">>) => {
+  Text: ({
+    props,
+    children,
+  }: BaseComponentProps<ShadcnProps<"Text">> & { children?: ReactNode }) => {
+    const content = renderInlineContent(props.text, children);
     const textClass =
       props.variant === "caption"
         ? "text-xs"
@@ -494,13 +501,13 @@ export const shadcnComponents = {
           : props.variant === "lead"
             ? "text-xl text-muted-foreground"
             : props.variant === "code"
-              ? "font-mono text-sm bg-muted px-1.5 py-0.5 rounded"
+              ? inlineCodeClass
               : "text-sm";
 
     if (props.variant === "code") {
-      return <code className={`${textClass} text-left`}>{props.text}</code>;
+      return <code className={`${textClass} text-left`}>{content}</code>;
     }
-    return <p className={`${textClass} text-left`}>{props.text}</p>;
+    return <p className={`${textClass} text-left`}>{content}</p>;
   },
 
   Image: ({ props }: BaseComponentProps<ShadcnProps<"Image">>) => {

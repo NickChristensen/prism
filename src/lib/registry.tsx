@@ -4,7 +4,6 @@ import { CalendarAgenda } from "@/components/catalog/calendar-agenda";
 import { CalendarEvent } from "@/components/catalog/calendar-event";
 import { Icon } from "@/components/catalog/icon-client";
 import { BulletList, NumberedList } from "@/components/catalog/lists";
-import { Text } from "@/components/catalog/text";
 import { TodoList } from "@/components/catalog/todo-list";
 import {
   InlineBold,
@@ -31,7 +30,7 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     Carousel: shadcnComponents.Carousel,
     Table: shadcnComponents.Table,
     Heading: shadcnComponents.Heading,
-    Text,
+    Text: shadcnComponents.Text,
     CalendarAgenda,
     CalendarEvent,
     Icon,

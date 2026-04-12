@@ -8,7 +8,6 @@ import {
   bulletListDefinition,
   numberedListDefinition,
 } from "@/components/catalog/lists";
-import { textDefinition } from "@/components/catalog/text";
 import { todoListDefinition } from "@/components/catalog/todo-list";
 import {
   inlineBoldDefinition,
@@ -34,7 +33,7 @@ export const catalog = defineCatalog(schema, {
     Carousel: shadcnComponentDefinitions.Carousel,
     Table: shadcnComponentDefinitions.Table,
     Heading: shadcnComponentDefinitions.Heading,
-    Text: textDefinition,
+    Text: shadcnComponentDefinitions.Text,
     CalendarAgenda: calendarAgendaDefinition,
     CalendarEvent: calendarEventDefinition,
     Icon: iconDefinition,

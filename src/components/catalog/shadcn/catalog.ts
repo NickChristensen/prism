@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { dynamicTextValueSchema } from "@/lib/text";
 
 // =============================================================================
 // Shared validation schemas used across form components
@@ -184,11 +185,13 @@ export const shadcnComponentDefinitions = {
 
   Text: {
     props: z.object({
-      text: z.string(),
+      text: dynamicTextValueSchema.optional(),
       variant: z.enum(["body", "caption", "muted", "lead", "code"]).nullable(),
     }),
-    description: "Paragraph text",
-    example: { text: "Hello, world!" },
+    slots: ["default"],
+    description:
+      "Paragraph text. For simple text, set props.text. For inline formatting, add child elements in the default slot, usually alternating InlineText with inline components like InlineBold, InlineItalic, InlineCode, InlineHighlight, InlineStrikethrough, and InlineLink. Keep children inline-only; do not place block components inside Text.",
+    example: { text: "Simple paragraph text", variant: "body" },
   },
 
   Image: {
