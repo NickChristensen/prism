@@ -1,42 +1,27 @@
 import { Clock, MapPin } from "lucide-react";
+import {
+  formatCalendarTime,
+  getMinutesBetween,
+  isAllDayEvent,
+} from "@/lib/calendar";
 import { cn } from "@/lib/utils";
 
 const HOUR_HEIGHT = 64;
-
-function toDate(value: string): Date {
-  return new Date(value);
-}
-
-function getEventDuration(startTime: string, endTime: string): number {
-  const start = toDate(startTime);
-  const end = toDate(endTime);
-
-  return Math.max((end.getTime() - start.getTime()) / 60000, 0);
-}
+const ALL_DAY_HEIGHT = 48;
 
 function getHeight(minutes: number): number {
   return Math.max((minutes / 60) * HOUR_HEIGHT, 16) + 16;
 }
 
 function getShadeScale(color: string) {
+  let whiteFormats = ["#ffffff", "#fff", "#ffffff00", "white"];
+  color = whiteFormats.includes(color) ? "var(--muted-foreground)" : color;
   return {
-    background: `color-mix(in oklab, white 82%, ${color} 18%)`,
-    border: `color-mix(in oklab, white 50%, ${color} 50%)`,
+    background: `color-mix(in oklab, var(--background) 82%, ${color} 18%)`,
+    border: `color-mix(in oklab, var(--background) 50%, ${color} 50%)`,
     stripe: color,
-    text: `color-mix(in oklab, black 25%, ${color} 75%)`,
+    text: `color-mix(in oklab, var(--foreground) 25%, ${color} 75%)`,
   };
-}
-
-function formatTime(value: string) {
-  const date = toDate(value);
-  const hour = date.getHours();
-  const min = date.getMinutes();
-  const displayHour = hour % 12 === 0 ? 12 : hour % 12;
-  const ampm = hour < 12 ? "AM" : "PM";
-
-  return min === 0
-    ? `${displayHour} ${ampm}`
-    : `${displayHour}:${min.toString().padStart(2, "0")} ${ampm}`;
 }
 
 export type CalendarEventProps = {
@@ -52,14 +37,16 @@ export function CalendarEvent({
   start,
   end,
   location,
-  backgroundColor,
+  backgroundColor = "var(--primary)",
 }: CalendarEventProps) {
-  const height = getHeight(getEventDuration(start, end));
+  const allDay = isAllDayEvent(start, end);
+  const height = allDay
+    ? ALL_DAY_HEIGHT
+    : getHeight(getMinutesBetween(start, end));
   const shades = getShadeScale(backgroundColor);
   const iconWrapperClasses = "flex items-center gap-0.5";
   const iconClasses = "w-2.5 h-2.5 shrink-0";
-  const layoutInline = height < 48;
-
+  const layoutInline = allDay || height < 48;
   return (
     <div
       className="rounded-lg overflow-hidden flex p-2 border"
@@ -82,12 +69,14 @@ export function CalendarEvent({
         )}
       >
         <p className="font-bold">{summary}</p>
-        <div className={iconWrapperClasses}>
-          <Clock className={iconClasses} />
-          <p>
-            {formatTime(start)} - {formatTime(end)}
-          </p>
-        </div>
+        {allDay || (
+          <div className={iconWrapperClasses}>
+            <Clock className={iconClasses} />
+            <p>
+              {formatCalendarTime(start)} - {formatCalendarTime(end)}
+            </p>
+          </div>
+        )}
       </div>
       {location && (
         <div
