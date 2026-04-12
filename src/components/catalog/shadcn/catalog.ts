@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { dynamicTextValueSchema } from "@/lib/text";
 
 // =============================================================================
 // Shared validation schemas used across form components
@@ -185,7 +184,7 @@ export const shadcnComponentDefinitions = {
 
   Text: {
     props: z.object({
-      text: dynamicTextValueSchema.optional(),
+      text: z.string().optional(),
       variant: z.enum(["body", "caption", "muted", "lead", "code"]).nullable(),
     }),
     slots: ["default"],

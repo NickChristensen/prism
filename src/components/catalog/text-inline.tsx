@@ -3,14 +3,13 @@ import type { BaseComponentProps } from "@json-render/react";
 import { shadcnComponentDefinitions } from "@/components/catalog/shadcn/catalog";
 import { shadcnComponents } from "@/components/catalog/shadcn/components";
 import {
-  dynamicTextValueSchema,
   inlineCodeClass,
   normalizeTextValue,
   renderInlineContent,
 } from "@/lib/text";
 
 const inlineTextPropsSchema = z.object({
-  text: dynamicTextValueSchema,
+  text: z.string(),
 });
 
 type InlineTextProps = z.infer<typeof inlineTextPropsSchema>;
@@ -29,7 +28,7 @@ export const inlineTextDefinition = {
 };
 
 const inlineContainerPropsSchema = z.object({
-  text: dynamicTextValueSchema.optional(),
+  text: z.string().optional(),
 });
 
 type InlineContainerProps = z.infer<typeof inlineContainerPropsSchema>;

@@ -14,7 +14,7 @@ function getHeight(minutes: number): number {
 }
 
 function getShadeScale(color: string) {
-  let whiteFormats = ["#ffffff", "#fff", "#ffffff00", "white"];
+  const whiteFormats = ["#ffffff", "#fff", "#ffffff00", "white"];
   color = whiteFormats.includes(color) ? "var(--muted-foreground)" : color;
   return {
     background: `color-mix(in oklab, var(--background) 82%, ${color} 18%)`,
