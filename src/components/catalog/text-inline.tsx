@@ -1,7 +1,8 @@
 import { Children, type ReactNode } from "react";
 import { z } from "zod";
 import type { BaseComponentProps } from "@json-render/react";
-import { shadcnComponents, shadcnComponentDefinitions } from "@json-render/shadcn";
+import { shadcnComponentDefinitions } from "@/components/catalog/shadcn/catalog";
+import { shadcnComponents } from "@/components/catalog/shadcn/components";
 
 export const dynamicTextValueSchema: z.ZodType = z.lazy(() =>
   z.union([
@@ -23,7 +24,8 @@ export const dynamicTextValueSchema: z.ZodType = z.lazy(() =>
   ]),
 );
 
-export const inlineCodeClass = "font-mono text-sm bg-muted px-1.5 py-0.5 rounded";
+export const inlineCodeClass =
+  "font-mono text-sm bg-muted px-1.5 py-0.5 rounded";
 
 export function normalizeTextValue(value: unknown): string {
   if (value == null) {
@@ -175,13 +177,7 @@ export function InlineLink({
   emit,
   on,
 }: BaseComponentProps<InlineLinkProps>) {
-  return (
-    <shadcnComponents.Link
-      props={props}
-      emit={emit}
-      on={on}
-    />
-  );
+  return <shadcnComponents.Link props={props} emit={emit} on={on} />;
 }
 
 export const inlineLinkDefinition = {

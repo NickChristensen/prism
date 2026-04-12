@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { BaseComponentProps } from "@json-render/react";
-import { shadcnComponentDefinitions } from "@json-render/shadcn/catalog";
+import { shadcnComponentDefinitions } from "@/components/catalog/shadcn/catalog";
 import {
   dynamicTextValueSchema,
   inlineCodeClass,

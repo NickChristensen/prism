@@ -1,5 +1,5 @@
 import { defineRegistry } from "@json-render/react";
-import { shadcnComponents } from "@json-render/shadcn";
+import { shadcnComponents } from "@/components/catalog/shadcn/components";
 import { CalendarAgenda } from "@/components/catalog/calendar-agenda";
 import { CalendarEvent } from "@/components/catalog/calendar-event";
 import { Icon } from "@/components/catalog/icon-client";
