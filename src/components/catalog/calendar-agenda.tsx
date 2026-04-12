@@ -1,9 +1,7 @@
 import type { BaseComponentProps } from "@json-render/react";
 import { z } from "zod";
-import {
-  CalendarEventView,
-  calendarEventPropsSchema,
-} from "@/components/catalog/calendar-event";
+import { calendarEventPropsSchema } from "@/components/catalog/calendar-event";
+import { CalendarEvent } from "@/components/presentational/calendar-event";
 
 function toDate(value: string): Date {
   return new Date(value);
@@ -109,7 +107,7 @@ export function CalendarAgenda({
         item.type === "gap" ? (
           <GhostGap key={`gap-${index}`} minutes={item.minutes} />
         ) : (
-          <CalendarEventView
+          <CalendarEvent
             key={`${item.event.start}-${item.event.summary}-${index}`}
             {...item.event}
           />
