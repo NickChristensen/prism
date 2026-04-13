@@ -184,13 +184,14 @@ export const shadcnComponentDefinitions = {
 
   Text: {
     props: z.object({
-      text: z.string().optional(),
-      variant: z.enum(["body", "caption", "muted", "lead", "code"]).nullable(),
+      text: z.string(),
+      variant: z.enum(["body", "caption", "muted", "lead"]).nullable(),
     }),
-    slots: ["default"],
     description:
-      "Paragraph text. For simple text, set props.text. For inline formatting, add child elements in the default slot, usually alternating InlineText with inline components like InlineBold, InlineItalic, InlineCode, InlineHighlight, InlineStrikethrough, and InlineLink. Keep children inline-only; do not place block components inside Text.",
-    example: { text: "Simple paragraph text", variant: "body" },
+      "Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [label](https://example.com).",
+    example: {
+      text: "Ship **today**, verify *carefully*, ==watch the rollout==, ignore ~~stale~~ docs, run `npm run build`, and [open Prism](https://example.com).",
+    },
   },
 
   Image: {

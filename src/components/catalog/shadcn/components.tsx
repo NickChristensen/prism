@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useState } from "react";
+import { useState } from "react";
 import {
   useBoundProp,
   useStateBinding,
@@ -114,7 +114,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { inlineCodeClass, renderInlineContent } from "@/lib/text";
+import { renderInlineMarkdown } from "@/lib/text-markdown";
 import { cn } from "@/lib/utils";
 
 import { type ShadcnProps } from "./catalog";
@@ -499,11 +499,7 @@ export const shadcnComponents = {
     );
   },
 
-  Text: ({
-    props,
-    children,
-  }: BaseComponentProps<ShadcnProps<"Text">> & { children?: ReactNode }) => {
-    const content = renderInlineContent(props.text, children);
+  Text: ({ props }: BaseComponentProps<ShadcnProps<"Text">>) => {
     const textClass =
       props.variant === "caption"
         ? "text-xs"
@@ -511,14 +507,13 @@ export const shadcnComponents = {
           ? "text-sm text-muted-foreground"
           : props.variant === "lead"
             ? "text-xl text-muted-foreground"
-            : props.variant === "code"
-              ? inlineCodeClass
-              : "text-sm";
-
-    if (props.variant === "code") {
-      return <code className={`${textClass} text-left`}>{content}</code>;
-    }
-    return <p className={`${textClass} text-left`}>{content}</p>;
+            : "text-sm";
+    return (
+      <p
+        className={`${textClass} text-left`}
+        dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(props.text) }}
+      />
+    );
   },
 
   Image: ({ props }: BaseComponentProps<ShadcnProps<"Image">>) => {

@@ -10,15 +10,6 @@ import {
   numberedListDefinition,
 } from "@/components/catalog/lists";
 import { todoListDefinition } from "@/components/catalog/todo-list";
-import {
-  inlineBoldDefinition,
-  inlineCodeDefinition,
-  inlineHighlightDefinition,
-  inlineItalicDefinition,
-  inlineLinkDefinition,
-  inlineStrikethroughDefinition,
-  inlineTextDefinition,
-} from "@/components/catalog/text-inline";
 
 export const catalog = defineCatalog(schema, {
   components: {
@@ -39,13 +30,6 @@ export const catalog = defineCatalog(schema, {
     CalendarEvent: calendarEventDefinition,
     Chat: chatDefinition,
     Icon: iconDefinition,
-    InlineText: inlineTextDefinition,
-    InlineBold: inlineBoldDefinition,
-    InlineItalic: inlineItalicDefinition,
-    InlineCode: inlineCodeDefinition,
-    InlineHighlight: inlineHighlightDefinition,
-    InlineStrikethrough: inlineStrikethroughDefinition,
-    InlineLink: inlineLinkDefinition,
     Image: shadcnComponentDefinitions.Image,
     Avatar: shadcnComponentDefinitions.Avatar,
     Badge: shadcnComponentDefinitions.Badge,

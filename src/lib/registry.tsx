@@ -6,15 +6,6 @@ import { Chat } from "@/components/catalog/chat";
 import { Icon } from "@/components/catalog/icon-client";
 import { BulletList, NumberedList } from "@/components/catalog/lists";
 import { TodoList } from "@/components/catalog/todo-list";
-import {
-  InlineBold,
-  InlineCode,
-  InlineHighlight,
-  InlineItalic,
-  InlineLink,
-  InlineStrikethrough,
-  InlineText,
-} from "@/components/catalog/text-inline";
 import { catalog } from "@/lib/catalog";
 
 export const { registry, handlers, executeAction } = defineRegistry(catalog, {
@@ -36,13 +27,6 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     CalendarEvent,
     Chat,
     Icon,
-    InlineText,
-    InlineBold,
-    InlineItalic,
-    InlineCode,
-    InlineHighlight,
-    InlineStrikethrough,
-    InlineLink,
     Image: shadcnComponents.Image,
     Avatar: shadcnComponents.Avatar,
     Badge: shadcnComponents.Badge,
