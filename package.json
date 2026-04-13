@@ -8,8 +8,8 @@
     "postbuild": "npm run print-prompt > generated-prompt.md",
     "start": "next start",
     "lint": "eslint",
-    "predeploy": "npm run sync-prompt",
     "deploy": "npm run build && launchctl kickstart -k gui/$(id -u)/ai.nick.prism",
+    "postdeploy": "npm run sync-prompt",
     "print-prompt": "npx tsx scripts/print-prompt.ts",
     "sync-prompt": "npx tsx scripts/sync-prompt.ts"
   },

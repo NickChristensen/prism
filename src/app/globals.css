@@ -4,6 +4,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@source inline("max-w-8/10 rounded-br-sm rounded-bl-sm");
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

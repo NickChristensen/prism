@@ -2,6 +2,7 @@ import { defineRegistry } from "@json-render/react";
 import { shadcnComponents } from "@/components/catalog/shadcn/components";
 import { CalendarAgenda } from "@/components/catalog/calendar-agenda";
 import { CalendarEvent } from "@/components/catalog/calendar-event";
+import { Chat } from "@/components/catalog/chat";
 import { Icon } from "@/components/catalog/icon-client";
 import { BulletList, NumberedList } from "@/components/catalog/lists";
 import { TodoList } from "@/components/catalog/todo-list";
@@ -33,6 +34,7 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     Text: shadcnComponents.Text,
     CalendarAgenda,
     CalendarEvent,
+    Chat,
     Icon,
     InlineText,
     InlineBold,

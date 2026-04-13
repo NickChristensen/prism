@@ -3,6 +3,7 @@ import { schema } from "@json-render/react/schema";
 import { shadcnComponentDefinitions } from "@/components/catalog/shadcn/catalog";
 import { calendarAgendaDefinition } from "@/components/catalog/calendar-agenda";
 import { calendarEventDefinition } from "@/components/catalog/calendar-event";
+import { chatDefinition } from "@/components/catalog/chat";
 import { iconDefinition } from "@/components/catalog/icon";
 import {
   bulletListDefinition,
@@ -36,6 +37,7 @@ export const catalog = defineCatalog(schema, {
     Text: shadcnComponentDefinitions.Text,
     CalendarAgenda: calendarAgendaDefinition,
     CalendarEvent: calendarEventDefinition,
+    Chat: chatDefinition,
     Icon: iconDefinition,
     InlineText: inlineTextDefinition,
     InlineBold: inlineBoldDefinition,

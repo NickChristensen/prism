@@ -50,7 +50,7 @@ For lists where users can add/remove items (todos, carts, etc.), use pushState a
 
 IMPORTANT: State paths use RFC 6901 JSON Pointer syntax (e.g. "/todos/0/title"). Do NOT use JavaScript-style dot notation (e.g. "/todos.length" is WRONG). To generate unique IDs for new items, use "$id" instead of trying to read array length.
 
-AVAILABLE COMPONENTS (49):
+AVAILABLE COMPONENTS (50):
 
 - Card: { title?: string, description?: string, maxWidth?: "sm" | "md" | "lg" | "full", centered?: boolean, className?: string } - Container card for content sections. Use for forms/content boxes, NOT for page headers. [accepts children]
 - Stack: { direction?: "horizontal" | "vertical", gap?: "none" | "sm" | "md" | "lg" | "xl", align?: "start" | "center" | "end" | "stretch", justify?: "start" | "center" | "end" | "between" | "around", className?: string } - Flex container for layouts [accepts children]
@@ -67,6 +67,7 @@ AVAILABLE COMPONENTS (49):
 - Text: { text?: string, variant?: "body" | "caption" | "muted" | "lead" | "code" } - Paragraph text. For simple text, set props.text. For inline formatting, add child elements in the default slot, usually alternating InlineText with inline components like InlineBold, InlineItalic, InlineCode, InlineHighlight, InlineStrikethrough, and InlineLink. Keep children inline-only; do not place block components inside Text. [accepts children]
 - CalendarAgenda: { events: Array<{ summary: string, start: string, end: string, location?: string, backgroundColor: string }> } - Use for a chronological set of events when you want to show a schedule, agenda, or multiple calendar events rather than a single event. Pass an events array with ISO datetimes; Events are rendered grouped by day, and sorted chronologically.
 - CalendarEvent: { summary: string, start: string, end: string, location?: string, backgroundColor: string } - Use for a single scheduled event when you want to show one appointment, meeting, reminder, or reservation on its own. Best when the UI needs details for one event rather than a sequence of events. Provide ISO start and end, plus the calendar or event's backgroundColor as a hex string.
+- Chat: { thread: { chat_id: number, name: string, identifier: string, messages: Array<{ text: string, created_at: string, sender?: string, sender_name?: string, is_from_me: boolean }> } } - Use for an iMessage, SMS, or chat conversation thread. Pass an entire thread, including its name and messages array; the component handles sorting distinguishing message senders, and displaying message timestamps. Best for sitrep message threads, conversational exchanges, group chats, or direct-message transcripts.
 - Icon: { name: string, size?: number, strokeWidth?: number, absoluteStrokeWidth?: boolean, color?: string, className?: string, label?: string } - Lucide icon rendered from a canonical kebab-case icon name such as calendar, mail, chart-column, dumbbell, or triangle-alert.
 - InlineText: { text: string } - Plain inline text fragment for use inside Text or other inline components.
 - InlineBold: { text?: string } - Bold inline text. Use either text or nested inline children. Do not provide both. [accepts children]
