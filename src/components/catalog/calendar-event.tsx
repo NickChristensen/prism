@@ -6,7 +6,7 @@ export const calendarEventPropsSchema = z.object({
   summary: z.string().min(1),
   start: z.iso.datetime(),
   end: z.iso.datetime(),
-  all_day: z.boolean().default(false),
+  allDay: z.boolean().optional(),
   location: z.string().optional(),
   backgroundColor: z.string().regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/),
 });
@@ -21,7 +21,7 @@ export const calendarEventDefinition = {
     summary: "Project Sync",
     start: "2026-04-09T09:00:00-05:00",
     end: "2026-04-09T09:30:00-05:00",
-    all_day: false,
+    allDay: false,
     location: "Zoom",
     backgroundColor: "#0088ff",
   },

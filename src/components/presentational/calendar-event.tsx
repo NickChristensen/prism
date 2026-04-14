@@ -25,17 +25,17 @@ export function CalendarEvent({
   summary,
   start,
   end,
-  all_day = false,
+  allDay = false,
   location,
   backgroundColor = "var(--primary)",
 }: CalendarEventProps) {
-  const height = all_day
+  const height = allDay
     ? ALL_DAY_HEIGHT
     : getHeight(getMinutesBetween(start, end));
   const shades = getShadeScale(backgroundColor);
   const iconWrapperClasses = "flex items-center gap-0.5";
   const iconClasses = "w-2.5 h-2.5 shrink-0";
-  const layoutInline = all_day || height < 48;
+  const layoutInline = allDay || height < 48;
   return (
     <div
       className="rounded-lg overflow-hidden flex p-2 border text-xs/snug"
@@ -58,7 +58,7 @@ export function CalendarEvent({
         )}
       >
         <p className="font-bold">{summary}</p>
-        {all_day || (
+        {allDay || (
           <div className={iconWrapperClasses}>
             <Clock className={iconClasses} />
             <p>

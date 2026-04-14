@@ -12,8 +12,8 @@ export const todoListItemSchema = z.object({
   tags: z.array(z.string()).optional(),
   project: z.string().optional(),
   area: z.string().optional(),
-  carried_over: z.number().int().nonnegative().optional(),
-  has_notes: z.boolean().optional(),
+  carriedOver: z.number().int().nonnegative().optional(),
+  hasNotes: z.boolean().optional(),
   highlighted: z.boolean().optional(),
 });
 
@@ -46,7 +46,7 @@ export function TodoList({ props }: BaseComponentProps<TodoListProps>) {
           <div className="shrink overflow-hidden">
             <div className="flex items-center gap-2">
               <p className="text-sm truncate">{item.title}</p>
-              {item.has_notes && (
+              {item.hasNotes && (
                 <File size={12} className={dimmedIconClasses} />
               )}
               {item.tags &&
