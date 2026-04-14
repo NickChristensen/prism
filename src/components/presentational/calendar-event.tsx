@@ -1,10 +1,7 @@
 import { Clock, MapPin } from "lucide-react";
-import {
-  formatCalendarTime,
-  getMinutesBetween,
-  isAllDayEvent,
-} from "@/lib/calendar";
+import { formatCalendarTime, getMinutesBetween } from "@/lib/calendar";
 import { cn } from "@/lib/utils";
+import { CalendarEventProps } from "../catalog/calendar-event";
 
 const HOUR_HEIGHT = 64;
 const ALL_DAY_HEIGHT = 48;
@@ -24,29 +21,21 @@ function getShadeScale(color: string) {
   };
 }
 
-export type CalendarEventProps = {
-  summary: string;
-  start: string;
-  end: string;
-  location?: string;
-  backgroundColor: string;
-};
-
 export function CalendarEvent({
   summary,
   start,
   end,
+  all_day = false,
   location,
   backgroundColor = "var(--primary)",
 }: CalendarEventProps) {
-  const allDay = isAllDayEvent(start, end);
-  const height = allDay
+  const height = all_day
     ? ALL_DAY_HEIGHT
     : getHeight(getMinutesBetween(start, end));
   const shades = getShadeScale(backgroundColor);
   const iconWrapperClasses = "flex items-center gap-0.5";
   const iconClasses = "w-2.5 h-2.5 shrink-0";
-  const layoutInline = allDay || height < 48;
+  const layoutInline = all_day || height < 48;
   return (
     <div
       className="rounded-lg overflow-hidden flex p-2 border text-xs/snug"
@@ -69,7 +58,7 @@ export function CalendarEvent({
         )}
       >
         <p className="font-bold">{summary}</p>
-        {allDay || (
+        {all_day || (
           <div className={iconWrapperClasses}>
             <Clock className={iconClasses} />
             <p>

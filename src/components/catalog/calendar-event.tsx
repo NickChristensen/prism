@@ -1,14 +1,12 @@
 import type { BaseComponentProps } from "@json-render/react";
 import { z } from "zod";
-import {
-  CalendarEvent as CalendarEventView,
-  type CalendarEventProps as CalendarEventViewProps,
-} from "@/components/presentational/calendar-event";
+import { CalendarEvent as CalendarEventView } from "@/components/presentational/calendar-event";
 
 export const calendarEventPropsSchema = z.object({
   summary: z.string().min(1),
   start: z.iso.datetime(),
   end: z.iso.datetime(),
+  all_day: z.boolean().default(false),
   location: z.string().optional(),
   backgroundColor: z.string().regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/),
 });
@@ -23,6 +21,7 @@ export const calendarEventDefinition = {
     summary: "Project Sync",
     start: "2026-04-09T09:00:00-05:00",
     end: "2026-04-09T09:30:00-05:00",
+    all_day: false,
     location: "Zoom",
     backgroundColor: "#0088ff",
   },
@@ -31,5 +30,5 @@ export const calendarEventDefinition = {
 export function CalendarEvent({
   props,
 }: BaseComponentProps<CalendarEventProps>) {
-  return <CalendarEventView {...(props as CalendarEventViewProps)} />;
+  return <CalendarEventView {...(props as CalendarEventProps)} />;
 }

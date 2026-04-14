@@ -1,14 +1,9 @@
 import {
   compareAsc,
-  differenceInCalendarDays,
   differenceInMinutes,
   format,
-  isEqual,
-  startOfDay,
   parseISO,
 } from "date-fns";
-
-const MINUTES_PER_DAY = 24 * 60;
 
 export function compareCalendarStarts(
   left: { start: string },
@@ -50,16 +45,4 @@ export function formatCalendarDuration(minutes: number): string {
   }
 
   return `${hours} ${hourLabel} ${remainingMinutes} minutes`;
-}
-
-export function isAllDayEvent(startTime: string, endTime: string): boolean {
-  const start = parseISO(startTime);
-  const end = parseISO(endTime);
-
-  return (
-    isEqual(start, startOfDay(start)) &&
-    isEqual(end, startOfDay(end)) &&
-    differenceInCalendarDays(end, start) >= 1 &&
-    getMinutesBetween(startTime, endTime) >= MINUTES_PER_DAY
-  );
 }

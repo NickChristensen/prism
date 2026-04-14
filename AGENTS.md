@@ -115,9 +115,11 @@ Each rendered spec still targets the registered catalog — Claudette can only u
 - The catalog definition is the source of truth. If a component isn't in the catalog, Claudette can't use it.
 - Each custom component needs: a Zod props schema and a description. The schema defines what props the AI may pass.
 - Prefer colocating each custom component's Zod props schema, inferred TypeScript props type, and exported catalog definition in the component file itself, then importing that definition into `src/lib/catalog.ts`. This keeps the AI-facing contract and runtime props in one place and avoids schema/type drift.
+- For Prism-owned catalog props, prefer `.optional()` over `.nullable()` unless `null` is a real semantic value you want to preserve from source data. In this repo, omission is usually the better contract for AI-generated JSON specs.
 - Keep app-owned components and catalog components in separate folders: place custom json-render/catalog components in `src/components/catalog/` and Prism app infrastructure components in `src/components/app/`.
 - Runtime component implementations receive `BaseComponentProps<T>` from `@json-render/react`; in practice you define the props schema in the catalog and then use `props` however you want in the component.
 - Keep component props flat and serializable — no functions, no JSX in the spec.
+- To verify prompt/catalog changes, use the build path that regenerates `generated-prompt.md`: run `npm run build` and inspect `generated-prompt.md`. `npm run print-prompt` prints the prompt to stdout only; it does not write the file by itself.
 - `@import` and `@source` do different jobs in Tailwind v4:
   - `@import` includes CSS files
   - `@source` tells Tailwind where to scan for class names
