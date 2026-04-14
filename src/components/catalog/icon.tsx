@@ -1,5 +1,25 @@
 import { z } from "zod";
 
+export const iconColorFamilies = [
+  "amber",
+  "blue",
+  "cyan",
+  "emerald",
+  "fuchsia",
+  "green",
+  "indigo",
+  "lime",
+  "orange",
+  "pink",
+  "purple",
+  "red",
+  "rose",
+  "sky",
+  "teal",
+  "violet",
+  "yellow",
+] as const;
+
 export const iconPropsSchema = z.object({
   name: z
     .string()
@@ -8,11 +28,7 @@ export const iconPropsSchema = z.object({
       "Canonical Lucide icon name in kebab-case, for example calendar, mail, chart-column, dumbbell, or triangle-alert.",
     ),
   size: z.number().int().min(12).max(96).optional(),
-  strokeWidth: z.number().min(0.5).max(3).optional(),
-  absoluteStrokeWidth: z.boolean().optional(),
-  color: z.string().optional(),
-  className: z.string().optional(),
-  label: z.string().optional(),
+  color: z.enum(iconColorFamilies).optional(),
 });
 
 export type IconProps = z.infer<typeof iconPropsSchema>;
@@ -20,5 +36,5 @@ export type IconProps = z.infer<typeof iconPropsSchema>;
 export const iconDefinition = {
   props: iconPropsSchema,
   description:
-    "Lucide icon rendered from a canonical kebab-case icon name such as calendar, mail, chart-column, dumbbell, or triangle-alert.",
+    "Lucide icon using a canonical kebab-case name such as calendar, mail, or chart-column. Omitting color inherits text color.",
 };
