@@ -33,13 +33,13 @@ export function TodoList({ props }: BaseComponentProps<TodoListProps>) {
   const dimmedIconClasses = "opacity-30 shrink-0";
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
       {props.items.map((item) => (
         <div
           key={item.uuid}
           className={cn(
-            "flex gap-2 items-center rounded-md",
-            item.highlighted && "bg-primary/25 -mx-2 px-2 -my-1 py-1",
+            "flex gap-2 items-center rounded-md px-2 py-1",
+            item.highlighted && "bg-primary/10 dark:bg-primary/30",
           )}
         >
           <Square size={14} className={dimmedIconClasses} />
