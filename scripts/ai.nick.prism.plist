@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Canonical plist. Symlinked from: ~/Library/LaunchAgents/ai.nick.prism.plist -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "https://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>ai.nick.prism</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/zsh</string>
+      <string>/Users/louie/code/prism/scripts/run-prod.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/louie/code/prism</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/prism.stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/prism.stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+      <key>HOME</key>
+      <string>/Users/louie</string>
+      <key>NODE_ENV</key>
+      <string>production</string>
+      <key>PORT</key>
+      <string>60001</string>
+    </dict>
+  </dict>
+</plist>
