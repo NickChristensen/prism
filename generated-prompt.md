@@ -92,8 +92,8 @@ AVAILABLE COMPONENTS (43):
 - ToggleGroup: { items: Array<{ label: string, value: string }>, type?: "single" | "multiple", value?: string } - Group of toggle buttons. Type 'single' (default) or 'multiple'. Use { $bindState } on value. [events: change]
 - ButtonGroup: { buttons: Array<{ label: string, value: string }>, selected?: string } - Segmented button group. Use { $bindState } on selected for selected value. [events: change]
 - Pagination: { totalPages: number, page?: number } - Page navigation. Use { $bindState } on page for current page number. [events: change]
-- BulletList: { items: Array<string> } - Bulleted unordered list of short text items.
-- NumberedList: { items: Array<string> } - Numbered ordered list of short text items.
+- BulletList: { items: Array<string> } - Bulleted unordered list of short text items. Each item supports the same inline markdown as Text.
+- NumberedList: { items: Array<string> } - Numbered ordered list of short text items. Each item supports the same inline markdown as Text.
 - TodoList: { items: Array<{ uuid: string, title: string, tags?: Array<string>, project?: string, area?: string, carriedOver?: number, hasNotes?: boolean, highlighted?: boolean }> } - Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag. Mark items as highlighted to visually distinguish and call attention to them.
 
 AVAILABLE ACTIONS:

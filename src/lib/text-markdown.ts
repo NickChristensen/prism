@@ -6,6 +6,20 @@ const linkClass =
 const inlineCodeClass = "font-mono text-sm bg-muted px-1.5 py-0.5 rounded";
 const inlineHighlightClass = "bg-yellow-200/70 text-foreground px-0.5 rounded";
 
+type RendererToken = {
+  content?: string;
+  attrSet?: (name: string, value: string) => void;
+  attrJoin?: (name: string, value: string) => void;
+};
+
+type RendererSelf = {
+  renderToken: (
+    tokens: RendererToken[],
+    idx: number,
+    options: Record<string, unknown>,
+  ) => string;
+};
+
 const inlineMarkdown = MarkdownIt("zero", {
   html: false,
   linkify: false,
@@ -13,20 +27,24 @@ const inlineMarkdown = MarkdownIt("zero", {
   .enable(["escape", "backticks", "strikethrough", "emphasis", "link", "entity"])
   .use(markdownItMark);
 
-inlineMarkdown.renderer.rules.code_inline = (tokens: any[], idx: number) => {
+inlineMarkdown.renderer.rules.code_inline = (
+  tokens: RendererToken[],
+  idx: number,
+) => {
   const content = inlineMarkdown.utils.escapeHtml(tokens[idx]?.content ?? "");
   return `<code class="${inlineCodeClass}">${content}</code>`;
 };
 
 inlineMarkdown.renderer.rules.link_open = (
-  tokens: any[],
+  tokens: RendererToken[],
   idx: number,
-  options: any,
-  _env: any,
-  self: any,
+  options: Record<string, unknown>,
+  _env: unknown,
+  self: RendererSelf,
 ) => {
-  tokens[idx]?.attrSet("class", linkClass);
-  tokens[idx]?.attrJoin("rel", "noreferrer");
+  const token = tokens[idx];
+  token?.attrSet?.("class", linkClass);
+  token?.attrJoin?.("rel", "noreferrer");
   return self.renderToken(tokens, idx, options);
 };
 
