@@ -188,7 +188,7 @@ export const shadcnComponentDefinitions = {
       variant: z.enum(["body", "caption", "muted", "lead"]).nullable(),
     }),
     description:
-      "Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [label](https://example.com).",
+      "Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [link](https://example.com).",
     example: {
       text: "Ship **today**, verify *carefully*, ==watch the rollout==, ignore ~~stale~~ docs, run `npm run build`, and [open Prism](https://example.com).",
     },
