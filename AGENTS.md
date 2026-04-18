@@ -8,6 +8,16 @@ Prism is a rich content renderer for OpenClaw. It's a Next.js app running on a M
 
 The goal: instead of squeezing complex data into Telegram's 40-char-wide text renderer, Claudette (the OpenClaw AI) generates a rich UI spec and sends a link. The user taps the link and sees a proper dashboard, chart, calendar view, etc.
 
+## Design Context
+
+- **Primary user:** Nick is the only user of Prism.
+- **Usage context:** Prism pages are opened from Telegram after an agent decides a richer UI is needed than Telegram's plain text + inline formatting can support. The page opens inside Telegram's fullscreen in-app browser sheet.
+- **Core purpose:** Present structured agent output such as lists, message threads, tables, cards, and sectioned summaries in a way that is faster to scan, easier to understand, and more pleasant to use than Telegram text.
+- **Visual direction:** Modern, crisp, clean, and native-ish. Support both light and dark themes.
+- **Design system baseline:** Treat the existing shadcn theme as the established standard. Extend it carefully rather than replacing it with a louder visual language.
+- **Anti-direction:** Avoid garish, soft, pastel, ornamental, or serif-led UI directions.
+- **Design priority:** Favor clarity, hierarchy, spacing, and calm readability over decorative effects or branding flourishes.
+
 ## Architecture
 
 ### The flow
