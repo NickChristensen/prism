@@ -2,6 +2,7 @@
   "name": "prism",
   "version": "0.1.0",
   "private": true,
+  "shadCnPreset": "b3963Uw2S",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
