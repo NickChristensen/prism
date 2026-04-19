@@ -1,9 +1,8 @@
 import MarkdownIt from "markdown-it";
 import markdownItMark from "markdown-it-mark";
 
-const linkClass =
-  "text-primary underline-offset-4 hover:underline text-sm font-medium";
-const inlineCodeClass = "font-mono text-sm bg-muted px-1.5 py-0.5 rounded";
+const linkClass = "text-primary underline-offset-4 hover:underline";
+const inlineCodeClass = "font-mono bg-muted px-1.5 py-0.5 rounded";
 const inlineHighlightClass = "bg-yellow-200/70 text-foreground px-0.5 rounded";
 
 type RendererToken = {
