@@ -123,17 +123,13 @@ function addEntities(
 }
 
 function fixRange(tweet: Tweet | QuotedTweet, entities: TextEntity[]) {
-  if (
-    tweet.entities.media &&
-    tweet.entities.media[0].indices[0] < tweet.display_text_range[1]
-  ) {
-    tweet.display_text_range[1] = tweet.entities.media[0].indices[0];
-  }
-
   const lastEntity = entities.at(-1);
 
-  if (lastEntity && lastEntity.indices[1] > tweet.display_text_range[1]) {
-    lastEntity.indices[1] = tweet.display_text_range[1];
+  if (tweet.entities.media && lastEntity) {
+    lastEntity.indices[1] = Math.min(
+      lastEntity.indices[1],
+      tweet.entities.media[0].indices[0],
+    );
   }
 }
 
@@ -141,7 +137,7 @@ function getEntities(tweet: Tweet | QuotedTweet): TweetEntity[] {
   const textMap = Array.from(tweet.text);
   const result: TextEntity[] = [
     {
-      indices: [...tweet.display_text_range] as Indices,
+      indices: [0, textMap.length],
       type: "text",
     },
   ];
