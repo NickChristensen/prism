@@ -5,6 +5,7 @@ import { CalendarEvent } from "@/components/catalog/calendar-event";
 import { Chat } from "@/components/catalog/chat";
 import { Icon } from "@/components/catalog/icon-client";
 import { BulletList, NumberedList } from "@/components/catalog/lists";
+import { Tweet } from "@/components/catalog/tweet";
 import { TodoList } from "@/components/catalog/todo-list";
 import { catalog } from "@/lib/catalog";
 
@@ -52,6 +53,7 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     Pagination: shadcnComponents.Pagination,
     BulletList,
     NumberedList,
+    Tweet,
     TodoList,
   },
 });

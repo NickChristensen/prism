@@ -9,6 +9,7 @@ import {
   bulletListDefinition,
   numberedListDefinition,
 } from "@/components/catalog/lists";
+import { tweetDefinition } from "@/components/catalog/tweet";
 import { todoListDefinition } from "@/components/catalog/todo-list";
 
 export const catalog = defineCatalog(schema, {
@@ -55,6 +56,7 @@ export const catalog = defineCatalog(schema, {
     Pagination: shadcnComponentDefinitions.Pagination,
     BulletList: bulletListDefinition,
     NumberedList: numberedListDefinition,
+    Tweet: tweetDefinition,
     TodoList: todoListDefinition,
   },
   actions: {},

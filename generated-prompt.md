@@ -50,7 +50,7 @@ For lists where users can add/remove items (todos, carts, etc.), use pushState a
 
 IMPORTANT: State paths use RFC 6901 JSON Pointer syntax (e.g. "/todos/0/title"). Do NOT use JavaScript-style dot notation (e.g. "/todos.length" is WRONG). To generate unique IDs for new items, use "$id" instead of trying to read array length.
 
-AVAILABLE COMPONENTS (43):
+AVAILABLE COMPONENTS (44):
 
 - Card: { title?: string, description?: string, maxWidth?: "sm" | "md" | "lg" | "full", centered?: boolean, className?: string } - Container card for content sections. Use for forms/content boxes, NOT for page headers. [accepts children]
 - Stack: { direction?: "horizontal" | "vertical", gap?: "none" | "sm" | "md" | "lg" | "xl", align?: "start" | "center" | "end" | "stretch", justify?: "start" | "center" | "end" | "between" | "around", className?: string } - Flex container for layouts [accepts children]
@@ -94,6 +94,7 @@ AVAILABLE COMPONENTS (43):
 - Pagination: { totalPages: number, page?: number } - Page navigation. Use { $bindState } on page for current page number. [events: change]
 - BulletList: { items: Array<string> } - Bulleted unordered list of short text items. Each item supports the same inline markdown as Text.
 - NumberedList: { items: Array<string> } - Numbered ordered list of short text items. Each item supports the same inline markdown as Text.
+- Tweet: { id: string } - Use to display a rich UI representation of a tweet, including media, quoted tweets, and author info.
 - TodoList: { items: Array<{ uuid: string, title: string, tags?: Array<string>, project?: string, area?: string, carriedOver?: number, hasNotes?: boolean, highlighted?: boolean }> } - Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag. Mark items as highlighted to visually distinguish and call attention to them.
 
 AVAILABLE ACTIONS:
