@@ -1,11 +1,14 @@
-import { Suspense } from "react";
-import { enrichTweet, type EnrichedTweet, type TweetProps } from "react-tweet";
-import { getTweet, type Tweet } from "react-tweet/api";
+"use client";
+
+import { useEffect, useState } from "react";
+import { enrichTweet, type EnrichedTweet } from "react-tweet";
+import type { Tweet as ReactTweet } from "react-tweet/api";
 import { ExternalLink } from "lucide-react";
 import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "./skeleton";
 
 const getTweetMediaProxyUrl = (url: string) =>
   `/api/tweet-media?url=${encodeURIComponent(url)}`;
@@ -24,15 +27,6 @@ export const truncate = (str: string | null, length: number) => {
   return `${str.slice(0, length - 3)}...`;
 };
 
-const Skeleton = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
-  return (
-    <div className={cn("bg-primary/10 rounded-md", className)} {...props} />
-  );
-};
-
 export const TweetSkeleton = ({
   className,
   ...props
@@ -42,7 +36,7 @@ export const TweetSkeleton = ({
 }) => (
   <div
     className={cn(
-      "flex size-full max-h-max min-w-72 flex-col gap-2 rounded-xl border p-4",
+      "relative flex w-full flex-col gap-4 overflow-hidden",
       className,
     )}
     {...props}
@@ -51,7 +45,7 @@ export const TweetSkeleton = ({
       <Skeleton className="size-10 shrink-0 rounded-full" />
       <Skeleton className="h-10 w-full" />
     </div>
-    <Skeleton className="h-20 w-full" />
+    <Skeleton className="h-48 w-full" />
   </div>
 );
 
@@ -64,7 +58,7 @@ export const TweetNotFound = ({
 }) => (
   <div
     className={cn(
-      "flex size-full flex-col items-center justify-center gap-2 rounded-lg border p-4",
+      "flex size-full flex-col items-center justify-center gap-2",
       className,
     )}
     {...props}
@@ -73,7 +67,13 @@ export const TweetNotFound = ({
   </div>
 );
 
-export const TweetHeader = ({ tweet }: { tweet: RenderableTweet }) => (
+export const TweetHeader = ({
+  tweet,
+  showShareLink = true,
+}: {
+  tweet: RenderableTweet;
+  showShareLink?: boolean;
+}) => (
   <div className="flex flex-row items-start justify-between tracking-normal">
     <div className="flex items-center space-x-3">
       <a
@@ -110,10 +110,12 @@ export const TweetHeader = ({ tweet }: { tweet: RenderableTweet }) => (
         </div>
       </div>
     </div>
-    <a href={tweet.url} target="_blank" rel="noreferrer">
-      <span className="sr-only">Link to tweet</span>
-      <ExternalLink className="text-muted-foreground hover:text-foreground size-4 items-start transition-all ease-in-out hover:scale-105" />
-    </a>
+    {showShareLink && (
+      <a href={tweet.url} target="_blank" rel="noreferrer">
+        <span className="sr-only">Link to tweet</span>
+        <ExternalLink className="text-muted-foreground hover:text-foreground size-4 items-start transition-all ease-in-out hover:scale-105" />
+      </a>
+    )}
   </div>
 );
 
@@ -164,7 +166,6 @@ export const TweetMedia = ({ tweet }: { tweet: RenderableTweet }) => {
       {video && (
         <video
           poster={video.poster}
-          // playsInline
           controls
           className="max-w-full h-full rounded-xl border object-cover object-top"
         >
@@ -205,16 +206,13 @@ export const MagicTweet = ({
   className,
   ...props
 }: {
-  tweet: Tweet;
+  tweet: ReactTweet;
   className?: string;
 }) => {
   const enrichedTweet = enrichTweet(tweet);
   return (
     <div
-      className={cn(
-        "relative flex w-full flex-col gap-4 overflow-hidden",
-        className,
-      )}
+      className={cn("relative flex w-full flex-col gap-4 py-4", className)}
       {...props}
     >
       <TweetHeader tweet={enrichedTweet} />
@@ -222,7 +220,10 @@ export const MagicTweet = ({
       <TweetMedia tweet={enrichedTweet} />
       {enrichedTweet.quoted_tweet && (
         <div className="relative flex w-full flex-col gap-4 overflow-hidden rounded-xl border p-4">
-          <TweetHeader tweet={enrichedTweet.quoted_tweet} />
+          <TweetHeader
+            tweet={enrichedTweet.quoted_tweet}
+            showShareLink={false}
+          />
           <TweetBody tweet={enrichedTweet.quoted_tweet} />
           <TweetMedia tweet={enrichedTweet.quoted_tweet} />
         </div>
@@ -231,36 +232,75 @@ export const MagicTweet = ({
   );
 };
 
-/**
- * TweetCard (Server Side Only)
- */
-export const TweetCard = async ({
+export const Tweet = ({
   id,
-  components,
-  fallback = <TweetSkeleton />,
   onError,
+  className,
   ...props
-}: TweetProps & {
+}: {
+  id: string;
+  onError?: (error: unknown) => void;
   className?: string;
 }) => {
-  const tweet = id
-    ? await getTweet(id).catch((err) => {
+  const [tweet, setTweet] = useState<ReactTweet | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    let isActive = true;
+
+    const fetchTweet = async () => {
+      const response = await fetch(`/api/tweet?id=${encodeURIComponent(id)}`);
+
+      if (response.status === 404) {
+        return null;
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch tweet: ${response.status}`);
+      }
+
+      return (await response.json()) as ReactTweet;
+    };
+
+    setLoading(true);
+    setFailed(false);
+    setTweet(null);
+
+    fetchTweet()
+      .then((result) => {
+        if (!isActive) return;
+        setTweet(result ?? null);
+      })
+      .catch((err) => {
+        if (!isActive) return;
+
         if (onError) {
           onError(err);
         } else {
           console.error(err);
         }
-      })
-    : undefined;
 
-  if (!tweet) {
-    const NotFound = components?.TweetNotFound ?? TweetNotFound;
-    return <NotFound {...props} />;
+        setFailed(true);
+      })
+      .finally(() => {
+        if (isActive) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [id, onError]);
+
+  if (loading) {
+    return <TweetSkeleton className={className} {...props} />;
   }
 
-  return (
-    <Suspense fallback={fallback}>
-      <MagicTweet tweet={tweet} {...props} />
-    </Suspense>
-  );
+  if (!tweet) {
+    return <TweetNotFound className={className} {...props} />;
+  }
+
+  return <MagicTweet tweet={tweet} className={className} {...props} />;
 };
