@@ -64,7 +64,7 @@ export default function RootLayout({
         geistMono.variable,
       )}
     >
-      <body className="min-h-full flex flex-col p-4 pb-8 bg-muted dark:bg-background text-foreground">
+      <body className="min-h-full max-w-2xl mx-auto p-4 pb-8 bg-muted dark:bg-background text-foreground">
         <Script id="theme-sync" strategy="beforeInteractive">
           {themeScript}
         </Script>
