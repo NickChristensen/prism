@@ -1,7 +1,6 @@
 import { defineRegistry } from "@json-render/react";
 import { shadcnComponents } from "@/components/catalog/shadcn/components";
-import { CalendarAgenda } from "@/components/catalog/calendar-agenda";
-import { CalendarEvent } from "@/components/catalog/calendar-event";
+import { Calendar } from "@/components/catalog/calendar";
 import { Chat } from "@/components/catalog/chat";
 import { Icon } from "@/components/catalog/icon-client";
 import { BulletList, NumberedList } from "@/components/catalog/lists";
@@ -24,8 +23,7 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     Table: shadcnComponents.Table,
     Heading: shadcnComponents.Heading,
     Text: shadcnComponents.Text,
-    CalendarAgenda,
-    CalendarEvent,
+    Calendar,
     Chat,
     Icon,
     Image: shadcnComponents.Image,

@@ -50,7 +50,7 @@ For lists where users can add/remove items (todos, carts, etc.), use pushState a
 
 IMPORTANT: State paths use RFC 6901 JSON Pointer syntax (e.g. "/todos/0/title"). Do NOT use JavaScript-style dot notation (e.g. "/todos.length" is WRONG). To generate unique IDs for new items, use "$id" instead of trying to read array length.
 
-AVAILABLE COMPONENTS (44):
+AVAILABLE COMPONENTS (43):
 
 - Card: { title?: string, description?: string, maxWidth?: "sm" | "md" | "lg" | "full", centered?: boolean, className?: string } - Container card for content sections. Use for forms/content boxes, NOT for page headers. [accepts children]
 - Stack: { direction?: "horizontal" | "vertical", gap?: "none" | "sm" | "md" | "lg" | "xl", align?: "start" | "center" | "end" | "stretch", justify?: "start" | "center" | "end" | "between" | "around", className?: string } - Flex container for layouts [accepts children]
@@ -65,8 +65,7 @@ AVAILABLE COMPONENTS (44):
 - Table: { columns: Array<string>, rows: Array<Array<string>>, caption?: string } - Data table. columns: header labels. rows: 2D array of cell strings, e.g. [["Alice","admin"],["Bob","user"]].
 - Heading: { text: string, level?: "h1" | "h2" | "h3" | "h4" } - Heading text (h1-h4)
 - Text: { text: string, variant?: "body" | "caption" | "muted" | "lead" } - Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [link](https://example.com).
-- CalendarAgenda: { events: Array<{ summary: string, start: string, end: string, allDay?: boolean, location?: string, backgroundColor: string }> } - Use for a chronological set of events when you want to show a schedule, agenda, or multiple calendar events rather than a single event. Pass an events array with ISO datetimes; Events are rendered grouped by day, and sorted chronologically.
-- CalendarEvent: { summary: string, start: string, end: string, allDay?: boolean, location?: string, backgroundColor: string } - Use for a single scheduled event when you want to show one appointment, meeting, reminder, or reservation on its own. Best when the UI needs details for one event rather than a sequence of events. Provide ISO start and end, plus the calendar or event's backgroundColor as a hex string.
+- Calendar: { events: Array<{ summary: string, start: string, end: string, allDay?: boolean, location?: string, backgroundColor: string }> } - Use for one or more scheduled calendar events when you want to show an appointment, meeting, reminder, reservation, or chronological agenda. Pass an events array with ISO datetimes; events are grouped by day, sorted chronologically, and a single event renders in the same card style without extra day headings.
 - Chat: { thread: { chat_id: number, name: string, identifier: string, messages: Array<{ text: string, created_at: string, sender?: string, sender_name?: string, is_from_me: boolean }> } } - Use for an iMessage, SMS, or chat conversation thread. Pass an entire thread, including its name and messages array; the component handles sorting distinguishing message senders, and displaying message timestamps. Best for sitrep message threads, conversational exchanges, group chats, or direct-message transcripts.
 - Icon: { name: string, size?: number, color?: "amber" | "blue" | "cyan" | "emerald" | "fuchsia" | "green" | "indigo" | "lime" | "orange" | "pink" | "purple" | "red" | "rose" | "sky" | "teal" | "violet" | "yellow" } - Lucide icon using a canonical kebab-case name such as calendar, mail, or chart-column. Omitting color inherits text color.
 - Image: { src?: string, alt: string, width?: number, height?: number } - Image component. Renders an img tag when src is provided, otherwise a placeholder.

@@ -1,8 +1,7 @@
 import { defineCatalog } from "@json-render/core";
 import { schema } from "@json-render/react/schema";
 import { shadcnComponentDefinitions } from "@/components/catalog/shadcn/catalog";
-import { calendarAgendaDefinition } from "@/components/catalog/calendar-agenda";
-import { calendarEventDefinition } from "@/components/catalog/calendar-event";
+import { calendarDefinition } from "@/components/catalog/calendar";
 import { chatDefinition } from "@/components/catalog/chat";
 import { iconDefinition } from "@/components/catalog/icon";
 import {
@@ -27,8 +26,7 @@ export const catalog = defineCatalog(schema, {
     Table: shadcnComponentDefinitions.Table,
     Heading: shadcnComponentDefinitions.Heading,
     Text: shadcnComponentDefinitions.Text,
-    CalendarAgenda: calendarAgendaDefinition,
-    CalendarEvent: calendarEventDefinition,
+    Calendar: calendarDefinition,
     Chat: chatDefinition,
     Icon: iconDefinition,
     Image: shadcnComponentDefinitions.Image,
