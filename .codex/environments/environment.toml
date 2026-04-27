@@ -19,3 +19,8 @@ command = "npm run test"
 name = "Deploy"
 icon = "tool"
 command = "npm run deploy"
+
+[[actions]]
+name = "Build"
+icon = "tool"
+command = "npm run build"
