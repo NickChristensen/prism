@@ -3,10 +3,13 @@
 import * as React from "react";
 import WheelGesturesPlugin from "embla-carousel-wheel-gestures";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { Area, AreaChart, ReferenceLine, XAxis, YAxis } from "recharts";
+import { z } from "zod";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { CardFooter } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -18,6 +21,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   formatMarketTimeInLocalZone,
   MARKET_CLOSE_MINUTE,
@@ -26,11 +30,25 @@ import {
 } from "@/lib/datetime";
 import { cn } from "@/lib/utils";
 
+export const stockQuotePropsSchema = z.object({
+  symbols: z.array(z.string().min(1)).min(1),
+  variant: z.enum(["carousel", "compact"]).optional(),
+});
+
+type StockQuoteProps = z.infer<typeof stockQuotePropsSchema>;
+
+export const stockQuoteDefinition = {
+  props: stockQuotePropsSchema,
+  description:
+    "Use to display one or more stock, ETF, index, or crypto quotes. Pass symbols only; Prism fetches live prices, daily change, intraday data, and comparisons.",
+};
+
 export type Comparison = {
   available: boolean;
-  price: number;
-  change: number;
-  changePercent: number;
+  price?: number | null;
+  change?: number | null;
+  changePercent?: number | null;
+  reason?: string;
 };
 
 export type StockQuoteData = {
@@ -70,12 +88,41 @@ const percentFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
+function normalizeSymbols(symbols: string[]) {
+  return [
+    ...new Set(
+      symbols
+        .map((symbol) => symbol.trim().replace(/^\$/, "").toUpperCase())
+        .filter(Boolean),
+    ),
+  ];
+}
+
 function formatComparisonLabel(key: string) {
   return comparisonLabels[key] ?? key.toUpperCase();
 }
 
 function comparisonEntries(quote: StockQuoteData) {
-  return Object.entries(quote.comparisons ?? {});
+  return Object.entries(quote.comparisons ?? {}).filter(
+    (
+      entry,
+    ): entry is [
+      string,
+      Comparison & {
+        available: true;
+        change: number;
+        changePercent: number;
+      },
+    ] => {
+      const comparison = entry[1];
+
+      return (
+        comparison.available === true &&
+        Number.isFinite(comparison.change) &&
+        Number.isFinite(comparison.changePercent)
+      );
+    },
+  );
 }
 
 function formatPrice(value: number, currency: string) {
@@ -102,6 +149,7 @@ function changeTone(isPositive: boolean) {
 
 function chartColorVar(isPositive: boolean, shade: 500 | 600) {
   const color = isPositive ? "green" : "red";
+
   return `var(--color-${color}-${shade})`;
 }
 
@@ -174,21 +222,27 @@ function StockQuotePriceChart({
   className,
   showTooltip = true,
 }: {
-  quote: StockQuoteData;
+  quote?: StockQuoteData;
   className?: string;
   showTooltip?: boolean;
 }) {
-  const chartModel = getStockQuoteChartModel(quote);
   const gradientId = React.useId().replace(/:/g, "");
+  const containerClasses = cn("aspect-auto w-full", className);
+
+  if (!quote) {
+    return <div className={containerClasses} />;
+  }
+
+  const chartModel = getStockQuoteChartModel(quote);
 
   if (!chartModel) {
-    return null;
+    return <div className={containerClasses} />;
   }
 
   return (
     <ChartContainer
       config={chartConfig(chartModel.isPositive)}
-      className={cn("aspect-auto w-full", className)}
+      className={containerClasses}
     >
       <AreaChart
         data={chartModel.points}
@@ -269,8 +323,16 @@ function StockQuotePriceChart({
   );
 }
 
-function StockQuoteFooter({ quote }: { quote: StockQuoteData }) {
-  const comparisonStats = comparisonEntries(quote).slice(0, 3);
+function StockQuoteFooter({
+  loading = false,
+  quote,
+}: {
+  loading?: boolean;
+  quote?: StockQuoteData;
+}) {
+  const comparisonStats = loading
+    ? (["7d", "30d", "ytd"] as const).map((key) => [key, null] as const)
+    : comparisonEntries(quote as StockQuoteData).slice(0, 3);
 
   if (comparisonStats.length === 0) {
     return null;
@@ -292,19 +354,23 @@ function StockQuoteFooter({ quote }: { quote: StockQuoteData }) {
             <p className="text-2xs font-medium text-muted-foreground uppercase">
               {formatComparisonLabel(key)}
             </p>
-            <div
-              className={cn(
-                "mt-1 flex items-center justify-center gap-0.5 text-xs font-semibold",
-                changeTone(comparison.change >= 0),
-              )}
-            >
-              {comparison.change >= 0 ? (
-                <ArrowUpRight className="size-[1.25em]" />
-              ) : (
-                <ArrowDownRight className="size-[1.25em]" />
-              )}
-              <span>{formatUnsignedPercent(comparison.changePercent)}</span>
-            </div>
+            {loading || !comparison ? (
+              <Skeleton className="mt-1 h-4 w-10 rounded-sm" />
+            ) : (
+              <div
+                className={cn(
+                  "mt-1 flex items-center justify-center gap-0.5 text-xs font-semibold",
+                  changeTone(comparison.change >= 0),
+                )}
+              >
+                {comparison.change >= 0 ? (
+                  <ArrowUpRight className="size-[1.25em]" />
+                ) : (
+                  <ArrowDownRight className="size-[1.25em]" />
+                )}
+                <span>{formatUnsignedPercent(comparison.changePercent)}</span>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -322,16 +388,26 @@ function StockQuoteSymbol({ symbol }: { symbol: string }) {
   );
 }
 
+function BlankIcon(props: React.ComponentProps<"div">) {
+  return <div {...props} />;
+}
+
 function StockQuoteChangeBadge({
   changePercent,
   isPositive,
+  loading = false,
   showIcon = true,
 }: {
-  changePercent: number;
-  isPositive: boolean;
+  changePercent?: number;
+  isPositive?: boolean;
+  loading?: boolean;
   showIcon?: boolean;
 }) {
-  const TrendIcon = isPositive ? ArrowUpRight : ArrowDownRight;
+  const TrendIcon = loading
+    ? BlankIcon
+    : isPositive
+      ? ArrowUpRight
+      : ArrowDownRight;
 
   return (
     <Badge
@@ -340,23 +416,29 @@ function StockQuoteChangeBadge({
         isPositive
           ? "bg-green-600 dark:bg-green-500"
           : "bg-red-600 dark:bg-red-500",
+        loading &&
+          "bg-foreground/50 dark:bg-foreground/50 animate-pulse text-transparent",
       )}
     >
       {showIcon && <TrendIcon className="size-[1.25em]!" />}
-      {formatUnsignedPercent(changePercent)}
+      {loading ? "0.00%" : formatUnsignedPercent(changePercent ?? 0)}
     </Badge>
   );
 }
 
 function StockQuoteListCard({
+  loading = false,
   quote,
   className,
+  symbol,
 }: {
-  quote: StockQuoteData;
+  loading?: boolean;
+  quote?: StockQuoteData;
   className?: string;
+  symbol?: string;
 }) {
-  const isPositive = quote.change >= 0;
-  const hasIntraday = (quote.intraday?.length ?? 0) > 0;
+  const isPositive = (quote?.change ?? 0) >= 0;
+  const hasIntraday = loading || (quote?.intraday?.length ?? 0) > 0;
 
   return (
     <Card className={cn("gap-0 p-0", className)}>
@@ -364,88 +446,125 @@ function StockQuoteListCard({
         <CardContent className="relative p-0">
           <StockQuotePriceChart quote={quote} className="h-44" />
           <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between px-4 pt-4">
-            <StockQuoteSymbol symbol={quote.symbol} />
+            <StockQuoteSymbol symbol={quote?.symbol ?? symbol ?? "..."} />
             <StockQuoteChangeBadge
-              changePercent={quote.changePercent}
+              changePercent={quote?.changePercent}
               isPositive={isPositive}
+              loading={loading}
             />
           </div>
         </CardContent>
       ) : (
         <CardContent className="flex items-start justify-between px-4 pt-4">
-          <StockQuoteSymbol symbol={quote.symbol} />
+          <StockQuoteSymbol symbol={quote?.symbol ?? symbol ?? "..."} />
           <StockQuoteChangeBadge
-            changePercent={quote.changePercent}
+            changePercent={quote?.changePercent}
             isPositive={isPositive}
+            loading={loading}
           />
         </CardContent>
       )}
-      <StockQuoteFooter quote={quote} />
+      <StockQuoteFooter loading={loading} quote={quote} />
     </Card>
   );
 }
 
-export function StockQuoteCompactList({
-  quotes,
+function StockQuoteCompactRow({
+  loading = false,
+  quote,
+  symbol,
 }: {
-  quotes: StockQuoteData[];
+  loading?: boolean;
+  quote?: StockQuoteData;
+  symbol?: string;
 }) {
+  const isPositive = (quote?.change ?? 0) >= 0;
+  const hasIntraday = loading || (quote?.intraday?.length ?? 0) > 0;
+
+  return (
+    <div className="flex gap-3 p-3">
+      <div
+        className={cn(
+          "flex gap-2 justify-between",
+          hasIntraday ? "flex-col items-start" : "flex-row items-center grow",
+        )}
+      >
+        <StockQuoteSymbol symbol={quote?.symbol ?? symbol ?? "..."} />
+        <StockQuoteChangeBadge
+          changePercent={quote?.changePercent}
+          isPositive={isPositive}
+          loading={loading}
+          showIcon={false}
+        />
+      </div>
+
+      {loading ? (
+        <Skeleton className="grow" />
+      ) : (
+        hasIntraday && (
+          <StockQuotePriceChart quote={quote} showTooltip={false} />
+        )
+      )}
+    </div>
+  );
+}
+
+function StockQuoteCompactList({
+  loading = false,
+  quotes,
+  symbols = [],
+}: {
+  loading?: boolean;
+  quotes: StockQuoteData[];
+  symbols?: string[];
+}) {
+  const rows = loading ? symbols : quotes.map((quote) => quote.symbol);
+
   return (
     <Card className="overflow-hidden py-0">
       <CardContent className="divide-y p-0">
-        {quotes.map((quote) => {
-          const isPositive = quote.change >= 0;
-          const hasIntraday = (quote.intraday?.length ?? 0) > 0;
-
-          return (
-            <div key={quote.symbol} className="flex gap-3 p-3">
-              <div
-                className={cn(
-                  "flex grow gap-2 justify-between",
-                  hasIntraday
-                    ? "flex-col items-start"
-                    : "flex-row items-center",
-                )}
-              >
-                <StockQuoteSymbol symbol={quote.symbol} />
-                <StockQuoteChangeBadge
-                  changePercent={quote.changePercent}
-                  isPositive={isPositive}
-                  showIcon={false}
-                />
-              </div>
-
-              {hasIntraday ? (
-                <StockQuotePriceChart quote={quote} showTooltip={false} />
-              ) : null}
-            </div>
-          );
-        })}
+        {rows.map((symbol, index) => (
+          <StockQuoteCompactRow
+            key={symbol}
+            loading={loading}
+            quote={quotes[index]}
+            symbol={symbol}
+          />
+        ))}
       </CardContent>
     </Card>
   );
 }
 
-export function StockQuoteList({
+function StockQuoteList({
+  loading = false,
   quotes,
   className,
+  symbols = [],
 }: {
+  loading?: boolean;
   quotes: StockQuoteData[];
   className?: string;
+  symbols?: string[];
 }) {
   const widthConstraints = "min-w-55 max-w-80";
-  if (quotes.length === 1) {
-    return (
-      <div className={cn(widthConstraints, className)}>
-        <StockQuoteListCard quote={quotes[0]} />
-      </div>
-    );
-  }
-
+  const items = loading ? symbols : quotes.map((quote) => quote.symbol);
   const wheelGestures = React.useMemo(
     () => [WheelGesturesPlugin({ forceWheelAxis: "x" })],
     [],
   );
+
+  if (items.length === 1) {
+    return (
+      <div className={cn(widthConstraints, className)}>
+        <StockQuoteListCard
+          loading={loading}
+          quote={quotes[0]}
+          symbol={items[0]}
+        />
+      </div>
+    );
+  }
 
   return (
     <Carousel
@@ -459,15 +578,108 @@ export function StockQuoteList({
       className={cn("-mx-2", className)}
     >
       <CarouselContent className="ml-0 py-2">
-        {quotes.map((quote) => (
+        {items.map((symbol, index) => (
           <CarouselItem
-            key={quote.symbol}
+            key={symbol}
             className={cn("basis-65 px-2 grow", widthConstraints)}
           >
-            <StockQuoteListCard quote={quote} />
+            <StockQuoteListCard
+              loading={loading}
+              quote={quotes[index]}
+              symbol={symbol}
+            />
           </CarouselItem>
         ))}
       </CarouselContent>
     </Carousel>
+  );
+}
+
+function StockQuoteUnavailable({
+  className,
+  ...props
+}: {
+  className?: string;
+  [key: string]: unknown;
+}) {
+  return (
+    <Card className={cn("p-4", className)} {...props}>
+      <p className="text-sm text-muted-foreground">Quotes unavailable.</p>
+    </Card>
+  );
+}
+
+export function StockQuote({ props }: { props: StockQuoteProps }) {
+  const symbols = useMemo(
+    () => normalizeSymbols(props.symbols),
+    [props.symbols],
+  );
+  const symbolKey = symbols.join(",");
+  const compact = props.variant === "compact";
+  const [result, setResult] = useState<{
+    symbolKey: string | null;
+    quotes: StockQuoteData[];
+  }>({
+    symbolKey: null,
+    quotes: [],
+  });
+
+  useEffect(() => {
+    let isActive = true;
+
+    const fetchQuotes = async () => {
+      const response = await fetch(
+        `/api/stock-quotes?symbols=${encodeURIComponent(symbolKey)}`,
+      );
+
+      if (response.status === 404) {
+        return [];
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch stock quotes: ${response.status}`);
+      }
+
+      const payload = (await response.json()) as { quotes?: StockQuoteData[] };
+
+      return Array.isArray(payload.quotes) ? payload.quotes : [];
+    };
+
+    if (!symbolKey) {
+      return;
+    }
+
+    fetchQuotes()
+      .then((result) => {
+        if (!isActive) return;
+        setResult({ symbolKey, quotes: result });
+      })
+      .catch((err) => {
+        if (!isActive) return;
+        console.error(err);
+        setResult({ symbolKey, quotes: [] });
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [symbolKey]);
+
+  if (symbolKey && result.symbolKey !== symbolKey) {
+    return compact ? (
+      <StockQuoteCompactList loading quotes={[]} symbols={symbols} />
+    ) : (
+      <StockQuoteList loading quotes={[]} symbols={symbols} />
+    );
+  }
+
+  if (result.quotes.length === 0) {
+    return <StockQuoteUnavailable />;
+  }
+
+  return compact ? (
+    <StockQuoteCompactList quotes={result.quotes} />
+  ) : (
+    <StockQuoteList quotes={result.quotes} />
   );
 }
