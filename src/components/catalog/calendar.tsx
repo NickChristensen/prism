@@ -8,7 +8,7 @@ import {
   formatCalendarTime,
   getCalendarDayKey,
   getMinutesBetween,
-} from "@/lib/calendar";
+} from "@/lib/datetime";
 import { cn } from "@/lib/utils";
 
 export const calendarEventPropsSchema = z.object({
