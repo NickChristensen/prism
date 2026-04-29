@@ -247,8 +247,13 @@ export const MagicTweet = ({
 };
 
 export function Tweet({ props }: BaseComponentProps<TweetProps>) {
-  const [tweet, setTweet] = useState<ReactTweet | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState<{
+    id: string | null;
+    tweet: ReactTweet | null;
+  }>({
+    id: null,
+    tweet: null,
+  });
 
   useEffect(() => {
     let isActive = true;
@@ -269,22 +274,15 @@ export function Tweet({ props }: BaseComponentProps<TweetProps>) {
       return (await response.json()) as ReactTweet;
     };
 
-    setLoading(true);
-    setTweet(null);
-
     fetchTweet()
       .then((result) => {
         if (!isActive) return;
-        setTweet(result ?? null);
+        setResult({ id: props.id, tweet: result ?? null });
       })
       .catch((err) => {
         if (!isActive) return;
         console.error(err);
-      })
-      .finally(() => {
-        if (isActive) {
-          setLoading(false);
-        }
+        setResult({ id: props.id, tweet: null });
       });
 
     return () => {
@@ -292,13 +290,13 @@ export function Tweet({ props }: BaseComponentProps<TweetProps>) {
     };
   }, [props.id]);
 
-  if (loading) {
+  if (result.id !== props.id) {
     return <TweetSkeleton />;
   }
 
-  if (!tweet) {
+  if (!result.tweet) {
     return <TweetNotFound />;
   }
 
-  return <MagicTweet tweet={tweet} />;
+  return <MagicTweet tweet={result.tweet} />;
 }
