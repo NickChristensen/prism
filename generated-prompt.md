@@ -65,12 +65,12 @@ AVAILABLE COMPONENTS (44):
 - Table: { columns: Array<string>, rows: Array<Array<string>>, caption?: string } - Data table. columns: header labels. rows: 2D array of cell strings, e.g. [["Alice","admin"],["Bob","user"]].
 - Heading: { text: string, level?: "h1" | "h2" | "h3" | "h4" } - Heading text (h1-h4)
 - Text: { text: string, variant?: "body" | "caption" | "muted" | "lead" } - Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [link](https://example.com).
-- Calendar: { events: Array<{ summary: string, start: string, end: string, allDay?: boolean, location?: string, backgroundColor: string }> } - Use for one or more scheduled calendar events when you want to show an appointment, meeting, reminder, reservation, or chronological agenda. Pass an events array with ISO datetimes; events are grouped by day, sorted chronologically, and a single event renders in the same card style without extra day headings.
-- Chat: { thread: { chat_id: number, name: string, identifier: string, messages: Array<{ text: string, created_at: string, sender?: string, sender_name?: string, is_from_me: boolean }> } } - Use for an iMessage, SMS, or chat conversation thread. Pass an entire thread, including its name and messages array; the component handles sorting distinguishing message senders, and displaying message timestamps. Best for sitrep message threads, conversational exchanges, group chats, or direct-message transcripts.
+- BulletList: { items: Array<string> } - Bulleted unordered list of short text items. Each item supports the same inline markdown as Text.
+- NumberedList: { items: Array<string> } - Numbered ordered list of short text items. Each item supports the same inline markdown as Text.
 - Icon: { name: string, size?: number, color?: "amber" | "blue" | "cyan" | "emerald" | "fuchsia" | "green" | "indigo" | "lime" | "orange" | "pink" | "purple" | "red" | "rose" | "sky" | "teal" | "violet" | "yellow" } - Lucide icon using a canonical kebab-case name such as calendar, mail, or chart-column. Omitting color inherits text color.
-- Image: { src?: string, alt: string, width?: number, height?: number } - Image component. Renders an img tag when src is provided, otherwise a placeholder.
 - Avatar: { src?: string, name: string, size?: "sm" | "md" | "lg" } - User avatar with fallback initials
 - Badge: { text: string, variant?: "default" | "secondary" | "destructive" | "outline" } - Status badge
+- Image: { src?: string, alt: string, width?: number, height?: number } - Image component. Renders an img tag when src is provided, otherwise a placeholder.
 - Alert: { title: string, message?: string, type?: "info" | "success" | "warning" | "error" } - Alert banner
 - Progress: { value: number, max?: number, label?: string } - Progress bar (value 0-100)
 - Skeleton: { width?: string, height?: string, rounded?: boolean } - Loading placeholder skeleton
@@ -91,11 +91,11 @@ AVAILABLE COMPONENTS (44):
 - ToggleGroup: { items: Array<{ label: string, value: string }>, type?: "single" | "multiple", value?: string } - Group of toggle buttons. Type 'single' (default) or 'multiple'. Use { $bindState } on value. [events: change]
 - ButtonGroup: { buttons: Array<{ label: string, value: string }>, selected?: string } - Segmented button group. Use { $bindState } on selected for selected value. [events: change]
 - Pagination: { totalPages: number, page?: number } - Page navigation. Use { $bindState } on page for current page number. [events: change]
-- BulletList: { items: Array<string> } - Bulleted unordered list of short text items. Each item supports the same inline markdown as Text.
-- NumberedList: { items: Array<string> } - Numbered ordered list of short text items. Each item supports the same inline markdown as Text.
+- Calendar: { events: Array<{ summary: string, start: string, end: string, allDay?: boolean, location?: string, backgroundColor: string }> } - Use for one or more scheduled calendar events when you want to show an appointment, meeting, reminder, reservation, or chronological agenda. Pass an events array with ISO datetimes; events are grouped by day, sorted chronologically, and a single event renders in the same card style without extra day headings.
+- Chat: { thread: { chat_id: number, name: string, identifier: string, messages: Array<{ text: string, created_at: string, sender?: string, sender_name?: string, is_from_me: boolean }> } } - Use for an iMessage, SMS, or chat conversation thread. Pass an entire thread, including its name and messages array; the component handles sorting distinguishing message senders, and displaying message timestamps. Best for sitrep message threads, conversational exchanges, group chats, or direct-message transcripts.
 - StockQuote: { symbols: Array<string>, variant?: "carousel" | "compact" } - Use to display one or more stock, ETF, index, or crypto quotes. Pass symbols only; Prism fetches live prices, daily change, intraday data, and comparisons.
-- Tweet: { id: string } - Use to display a rich UI representation of a tweet, including media, quoted tweets, and author info.
 - TodoList: { items: Array<{ uuid: string, title: string, tags?: Array<string>, project?: string, area?: string, carriedOver?: number, hasNotes?: boolean, highlighted?: boolean }> } - Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag. Mark items as highlighted to visually distinguish and call attention to them.
+- Tweet: { id: string } - Use to display a rich UI representation of a tweet, including media, quoted tweets, and author info.
 
 AVAILABLE ACTIONS:
 
