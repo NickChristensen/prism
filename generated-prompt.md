@@ -52,7 +52,7 @@ IMPORTANT: State paths use RFC 6901 JSON Pointer syntax (e.g. "/todos/0/title").
 
 AVAILABLE COMPONENTS (44):
 
-- Card: { title?: string, description?: string, maxWidth?: "sm" | "md" | "lg" | "full", centered?: boolean, className?: string } - Container card for content sections. Use for forms/content boxes, NOT for page headers. [accepts children]
+- Card: { title?: string, icon?: string, description?: string, maxWidth?: "sm" | "md" | "lg" | "full", centered?: boolean, className?: string } - Container card for content sections. Use for forms/content boxes, NOT for page headers. Icon is a Lucide icon name (e.g. chart-column) to use in place of a decorative emoji. [accepts children]
 - Stack: { direction?: "horizontal" | "vertical", gap?: "none" | "sm" | "md" | "lg" | "xl", align?: "start" | "center" | "end" | "stretch", justify?: "start" | "center" | "end" | "between" | "around", className?: string } - Flex container for layouts [accepts children]
 - Grid: { columns?: number, gap?: "sm" | "md" | "lg" | "xl", className?: string } - Grid layout (1-6 columns) [accepts children]
 - Separator: { orientation?: "horizontal" | "vertical" } - Visual separator line

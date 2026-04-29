@@ -115,6 +115,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { renderInlineMarkdown } from "@/lib/text-markdown";
+import { Icon } from "@/components/presentational/icon";
 import { cn } from "@/lib/utils";
 
 import { type ShadcnProps } from "./catalog";
@@ -186,9 +187,16 @@ export const shadcnComponents = {
 
     return (
       <Card className={cn(maxWidthClass, centeredClass, props.className)}>
-        {(props.title || props.description) && (
+        {(props.title || props.icon || props.description) && (
           <CardHeader>
-            {props.title && <CardTitle>{props.title}</CardTitle>}
+            {(props.title || props.icon) && (
+              <CardTitle className="flex items-center gap-2">
+                {props.icon && (
+                  <Icon name={props.icon} size={20} className="shrink-0" />
+                )}
+                {props.title}
+              </CardTitle>
+            )}
             {props.description && (
               <CardDescription>{props.description}</CardDescription>
             )}
