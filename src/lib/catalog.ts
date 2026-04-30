@@ -55,7 +55,7 @@ export const catalog = defineCatalog(schema, {
     Pagination: shadcnComponentDefinitions.Pagination,
     Calendar: calendarDefinition,
     Chat: chatDefinition,
-    StockQuote: stockQuoteDefinition,
+    StockQuoteCard: stockQuoteDefinition,
     TodoList: todoListDefinition,
     Tweet: tweetDefinition,
   },

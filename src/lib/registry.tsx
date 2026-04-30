@@ -52,7 +52,7 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     Pagination: shadcnComponents.Pagination,
     Calendar,
     Chat,
-    StockQuote,
+    StockQuoteCard: StockQuote,
     TodoList,
     Tweet,
   },

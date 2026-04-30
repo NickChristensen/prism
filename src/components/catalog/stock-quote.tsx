@@ -40,7 +40,7 @@ type StockQuoteProps = z.infer<typeof stockQuotePropsSchema>;
 export const stockQuoteDefinition = {
   props: stockQuotePropsSchema,
   description:
-    "Use to display one or more stock, ETF, index, or crypto quotes. Pass symbols only; Prism fetches live prices, daily change, intraday data, and comparisons.",
+    "Self-contained stock quote card or quote-card carousel for one or more stock, ETF, index, or crypto quotes. Use directly rather than wrapping in another Card. Pass symbols only; Prism fetches live prices, daily change, intraday data, and comparisons.",
 };
 
 export type Comparison = {
@@ -521,7 +521,7 @@ function StockQuoteCompactList({
   const rows = loading ? symbols : quotes.map((quote) => quote.symbol);
 
   return (
-    <Card className="overflow-hidden py-0">
+    <Card className="self-stretch overflow-hidden py-0">
       <CardContent className="divide-y p-0">
         {rows.map((symbol, index) => (
           <StockQuoteCompactRow
@@ -556,13 +556,12 @@ function StockQuoteList({
 
   if (items.length === 1) {
     return (
-      <div className={cn(widthConstraints, className)}>
-        <StockQuoteListCard
-          loading={loading}
-          quote={quotes[0]}
-          symbol={items[0]}
-        />
-      </div>
+      <StockQuoteListCard
+        className={cn("self-stretch", widthConstraints, className)}
+        loading={loading}
+        quote={quotes[0]}
+        symbol={items[0]}
+      />
     );
   }
 
@@ -575,18 +574,18 @@ function StockQuoteList({
         slidesToScroll: "auto",
       }}
       plugins={wheelGestures}
-      className={cn("-mx-2", className)}
+      className={cn("self-stretch -mx-4", className)}
     >
-      <CarouselContent className="ml-0 py-2">
-        {items.map((symbol, index) => (
-          <CarouselItem
-            key={symbol}
-            className={cn("basis-65 px-2 grow", widthConstraints)}
-          >
-            <StockQuoteListCard
-              loading={loading}
-              quote={quotes[index]}
-              symbol={symbol}
+        <CarouselContent className="ml-0 py-2">
+          {items.map((symbol, index) => (
+            <CarouselItem
+              key={symbol}
+              className={cn("basis-65 px-2 grow", widthConstraints)}
+            >
+              <StockQuoteListCard
+                loading={loading}
+                quote={quotes[index]}
+                symbol={symbol}
             />
           </CarouselItem>
         ))}
@@ -603,7 +602,7 @@ function StockQuoteUnavailable({
   [key: string]: unknown;
 }) {
   return (
-    <Card className={cn("p-4", className)} {...props}>
+    <Card className={cn("self-stretch p-4", className)} {...props}>
       <p className="text-sm text-muted-foreground">Quotes unavailable.</p>
     </Card>
   );
