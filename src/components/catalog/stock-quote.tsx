@@ -2,7 +2,12 @@
 
 import * as React from "react";
 import WheelGesturesPlugin from "embla-carousel-wheel-gestures";
-import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  GalleryHorizontal,
+  Rows3,
+} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Area, AreaChart, ReferenceLine, XAxis, YAxis } from "recharts";
 import { z } from "zod";
@@ -22,6 +27,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   formatMarketTimeInLocalZone,
   MARKET_CLOSE_MINUTE,
@@ -32,7 +38,6 @@ import { cn } from "@/lib/utils";
 
 export const stockQuotePropsSchema = z.object({
   symbols: z.array(z.string().min(1)).min(1),
-  variant: z.enum(["carousel", "compact"]).optional(),
 });
 
 type StockQuoteProps = z.infer<typeof stockQuotePropsSchema>;
@@ -40,7 +45,7 @@ type StockQuoteProps = z.infer<typeof stockQuotePropsSchema>;
 export const stockQuoteDefinition = {
   props: stockQuotePropsSchema,
   description:
-    "Self-contained stock quote card or quote-card carousel for one or more stock, ETF, index, or crypto quotes. Use directly rather than wrapping in another Card. Pass symbols only; Prism fetches live prices, daily change, intraday data, and comparisons.",
+    "Self-contained stock quote card for one or more stock, ETF, index, or crypto quotes. Use directly rather than wrapping in a Card; use a separate Card for commentary if needed. Pass symbols only; Prism fetches and displays live prices, intraday data, and comparisons.",
 };
 
 export type Comparison = {
@@ -610,13 +615,52 @@ function StockQuoteUnavailable({
   );
 }
 
+function StockQuoteViewToggle({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  let itemClassName =
+    "bg-background data-[state=on]:bg-background hover:bg-background text-muted-foreground data-[state=on]:text-foreground";
+  return (
+    <div className="flex justify-end">
+      <ToggleGroup
+        type="single"
+        value={value}
+        onValueChange={(val) => !!val && onChange(val)}
+        variant="outline"
+        size="sm"
+        className="shadow-xs"
+        aria-label="Stock quote view"
+      >
+        <ToggleGroupItem
+          value="carousel"
+          aria-label="Carousel view"
+          className={itemClassName}
+        >
+          <GalleryHorizontal />
+        </ToggleGroupItem>
+        <ToggleGroupItem
+          value="compact"
+          aria-label="List view"
+          className={itemClassName}
+        >
+          <Rows3 />
+        </ToggleGroupItem>
+      </ToggleGroup>
+    </div>
+  );
+}
+
 export function StockQuote({ props }: { props: StockQuoteProps }) {
   const symbols = useMemo(
     () => normalizeSymbols(props.symbols),
     [props.symbols],
   );
   const symbolKey = symbols.join(",");
-  const compact = props.variant === "compact";
+  const [view, setView] = useState("carousel");
   const [result, setResult] = useState<{
     symbolKey: string | null;
     quotes: StockQuoteData[];
@@ -624,6 +668,7 @@ export function StockQuote({ props }: { props: StockQuoteProps }) {
     symbolKey: null,
     quotes: [],
   });
+  let Component = view === "compact" ? StockQuoteCompactList : StockQuoteList;
 
   useEffect(() => {
     let isActive = true;
@@ -666,21 +711,21 @@ export function StockQuote({ props }: { props: StockQuoteProps }) {
     };
   }, [symbolKey]);
 
-  if (symbolKey && result.symbolKey !== symbolKey) {
-    return compact ? (
-      <StockQuoteCompactList loading quotes={[]} symbols={symbols} />
-    ) : (
-      <StockQuoteList loading quotes={[]} symbols={symbols} />
-    );
-  }
+  let isLoading = !!symbolKey && result.symbolKey !== symbolKey;
+  let noResults = result.quotes.length === 0;
 
-  if (result.quotes.length === 0) {
-    return <StockQuoteUnavailable />;
-  }
-
-  return compact ? (
-    <StockQuoteCompactList quotes={result.quotes} />
-  ) : (
-    <StockQuoteList quotes={result.quotes} />
+  return (
+    <div className="flex self-stretch flex-col gap-2">
+      <StockQuoteViewToggle value={view} onChange={setView} />
+      {!isLoading && noResults ? (
+        <StockQuoteUnavailable />
+      ) : (
+        <Component
+          loading={isLoading}
+          quotes={result.quotes}
+          symbols={symbols}
+        />
+      )}
+    </div>
   );
 }
