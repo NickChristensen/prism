@@ -1,4 +1,3 @@
-import type { BaseComponentProps } from "@json-render/react";
 import { Clock, MapPin } from "lucide-react";
 import { z } from "zod";
 import {
@@ -197,7 +196,7 @@ function DateHeading({ date }: { date: string }) {
   );
 }
 
-export function Calendar({ props }: BaseComponentProps<CalendarProps>) {
+export function Calendar({ props }: { props: CalendarProps }) {
   const eventsByDay = new Map<string, CalendarDayEvent[]>();
 
   for (const event of props.events) {

@@ -1,4 +1,3 @@
-import type { BaseComponentProps } from "@json-render/react";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 
@@ -76,7 +75,7 @@ function MessageCluster({ messages }: { messages: ChatMessage[] }) {
   );
 }
 
-export function Chat({ props }: BaseComponentProps<ChatProps>) {
+export function Chat({ props }: { props: ChatProps }) {
   const messages = [...props.thread.messages].sort(
     (a, b) =>
       new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),

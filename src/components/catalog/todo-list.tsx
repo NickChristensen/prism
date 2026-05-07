@@ -1,6 +1,4 @@
 "use client";
-
-import type { BaseComponentProps } from "@json-render/react";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { File, Square } from "lucide-react";
@@ -29,7 +27,7 @@ export const todoListDefinition = {
     "Todo list with an array of items, each carrying title plus optional tags, project, area, and notes flag. Mark items as highlighted to visually distinguish and call attention to them.",
 };
 
-export function TodoList({ props }: BaseComponentProps<TodoListProps>) {
+export function TodoList({ props }: { props: TodoListProps }) {
   const dimmedIconClasses = "opacity-30 shrink-0";
 
   return (

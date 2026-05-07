@@ -1,6 +1,5 @@
 "use client";
 
-import type { BaseComponentProps } from "@json-render/react";
 import { useEffect, useState } from "react";
 import type { Tweet as ReactTweet } from "react-tweet/api";
 import { ExternalLink } from "lucide-react";
@@ -246,7 +245,7 @@ export const MagicTweet = ({
   );
 };
 
-export function Tweet({ props }: BaseComponentProps<TweetProps>) {
+export function Tweet({ props }: { props: TweetProps }) {
   const [result, setResult] = useState<{
     id: string | null;
     tweet: ReactTweet | null;

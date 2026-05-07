@@ -1,4 +1,3 @@
-import type { BaseComponentProps } from "@json-render/react";
 import { z } from "zod";
 import { renderInlineMarkdown } from "@/lib/text-markdown";
 
@@ -20,7 +19,7 @@ export const numberedListDefinition = {
     "Numbered ordered list of short text items. Each item supports the same inline markdown as Text.",
 };
 
-export function BulletList({ props }: BaseComponentProps<ListProps>) {
+export function BulletList({ props }: { props: ListProps }) {
   return (
     <ul className="list-disc space-y-2 pl-5 text-sm">
       {props.items.map((item, index) => (
@@ -33,7 +32,7 @@ export function BulletList({ props }: BaseComponentProps<ListProps>) {
   );
 }
 
-export function NumberedList({ props }: BaseComponentProps<ListProps>) {
+export function NumberedList({ props }: { props: ListProps }) {
   return (
     <ol className="list-decimal space-y-2 pl-5 text-sm">
       {props.items.map((item, index) => (
