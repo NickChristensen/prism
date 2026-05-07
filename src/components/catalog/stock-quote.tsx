@@ -103,10 +103,6 @@ function normalizeSymbols(symbols: string[]) {
   ];
 }
 
-function formatComparisonLabel(key: string) {
-  return comparisonLabels[key] ?? key.toUpperCase();
-}
-
 function comparisonEntries(quote: StockQuoteData) {
   return Object.entries(quote.comparisons ?? {}).filter(
     (
@@ -344,27 +340,22 @@ function StockQuoteFooter({
   }
 
   return (
-    <CardFooter className="p-4">
-      <div
-        className="grid w-full gap-2"
-        style={{
-          gridTemplateColumns: `repeat(${comparisonStats.length}, minmax(0, 1fr))`,
-        }}
-      >
+    <CardFooter className="p-0">
+      <div className="flex w-full border-t border-border/75 divide-x divide-border/75">
         {comparisonStats.map(([key, comparison]) => (
           <div
             key={key}
-            className="flex min-w-0 flex-col items-center text-center"
+            className="flex min-w-0 flex-1 flex-col items-center gap-0.5 py-3"
           >
             <p className="text-2xs font-medium text-muted-foreground uppercase">
-              {formatComparisonLabel(key)}
+              {key}
             </p>
             {loading || !comparison ? (
-              <Skeleton className="mt-1 h-4 w-10 rounded-sm" />
+              <Skeleton className="h-4 w-16 rounded-sm" />
             ) : (
               <div
                 className={cn(
-                  "mt-1 flex items-center justify-center gap-0.5 text-xs font-semibold",
+                  "flex items-center gap-0.5 text-xs font-semibold",
                   changeTone(comparison.change >= 0),
                 )}
               >
