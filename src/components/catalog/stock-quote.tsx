@@ -144,14 +144,12 @@ function formatUnsignedPercent(value: number) {
 
 function changeTone(isPositive: boolean) {
   return isPositive
-    ? "text-green-700 dark:text-green-400"
+    ? "text-emerald-700 dark:text-emerald-400"
     : "text-red-700 dark:text-red-400";
 }
 
 function chartColorVar(isPositive: boolean, shade: 500 | 600) {
-  const color = isPositive ? "green" : "red";
-
-  return `var(--color-${color}-${shade})`;
+  return `var(--color-${isPositive ? "emerald" : "red"}-${shade})`;
 }
 
 function chartFillColor(isPositive: boolean, shade: 500 | 600) {
@@ -180,8 +178,8 @@ function chartConfig(isPositive: boolean): ChartConfig {
     open: {
       label: "Previous close",
       theme: {
-        light: "var(--color-zinc-300)",
-        dark: "var(--color-zinc-600)",
+        light: "var(--color-ring)",
+        dark: "var(--color-ring)",
       },
     },
   };
@@ -410,7 +408,7 @@ function StockQuoteChangeBadge({
       className={cn(
         "justify-center gap-0.5 rounded-sm px-1 text-sm font-semibold text-background",
         isPositive
-          ? "bg-green-600 dark:bg-green-500"
+          ? "bg-emerald-600 dark:bg-emerald-500"
           : "bg-red-600 dark:bg-red-500",
         loading &&
           "bg-foreground/50 dark:bg-foreground/50 animate-pulse text-transparent",
