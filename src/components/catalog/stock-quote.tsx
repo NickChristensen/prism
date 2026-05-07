@@ -380,7 +380,7 @@ function StockQuoteFooter({
 
 function StockQuoteSymbol({ symbol }: { symbol: string }) {
   return (
-    <div className="-mx-2 -my-1 rounded-sm bg-card/50 px-2 py-1 backdrop-blur-[1px]">
+    <div className="-mx-2 -my-1 rounded-sm bg-card/75 px-2 py-1">
       <p className="font-heading text-xl leading-none font-semibold tracking-tight">
         {symbol}
       </p>
@@ -574,22 +574,24 @@ function StockQuoteList({
         slidesToScroll: "auto",
       }}
       plugins={wheelGestures}
-      className={cn("self-stretch -mx-4", className)}
+      className={cn("relative self-stretch -mx-4", className)}
     >
-        <CarouselContent className="ml-0 py-2">
-          {items.map((symbol, index) => (
-            <CarouselItem
-              key={symbol}
-              className={cn("basis-65 px-2 grow", widthConstraints)}
-            >
-              <StockQuoteListCard
-                loading={loading}
-                quote={quotes[index]}
-                symbol={symbol}
+      <CarouselContent className="ml-0 py-2">
+        {items.map((symbol, index) => (
+          <CarouselItem
+            key={symbol}
+            className={cn("basis-65 px-2 grow", widthConstraints)}
+          >
+            <StockQuoteListCard
+              loading={loading}
+              quote={quotes[index]}
+              symbol={symbol}
             />
           </CarouselItem>
         ))}
       </CarouselContent>
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-4 bg-linear-to-r from-page-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-4 bg-linear-to-l from-page-background to-transparent" />
     </Carousel>
   );
 }
