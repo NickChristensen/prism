@@ -70,12 +70,6 @@ export type StockQuoteData = {
   comparisons?: Record<string, Comparison>;
 };
 
-const comparisonLabels: Record<string, string> = {
-  "7d": "7D",
-  "30d": "30D",
-  ytd: "YTD",
-};
-
 const priceFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -611,7 +605,7 @@ function StockQuoteViewToggle({
   value: string;
   onChange: (value: string) => void;
 }) {
-  let itemClassName =
+  const itemClassName =
     "bg-background data-[state=on]:bg-background hover:bg-background text-muted-foreground data-[state=on]:text-foreground";
   return (
     <div className="flex justify-end">
@@ -657,7 +651,7 @@ export function StockQuote({ props }: { props: StockQuoteProps }) {
     symbolKey: null,
     quotes: [],
   });
-  let Component = view === "compact" ? StockQuoteCompactList : StockQuoteList;
+  const Component = view === "compact" ? StockQuoteCompactList : StockQuoteList;
 
   useEffect(() => {
     let isActive = true;
@@ -700,8 +694,8 @@ export function StockQuote({ props }: { props: StockQuoteProps }) {
     };
   }, [symbolKey]);
 
-  let isLoading = !!symbolKey && result.symbolKey !== symbolKey;
-  let noResults = result.quotes.length === 0;
+  const isLoading = !!symbolKey && result.symbolKey !== symbolKey;
+  const noResults = result.quotes.length === 0;
 
   return (
     <div className="flex self-stretch flex-col gap-2">
