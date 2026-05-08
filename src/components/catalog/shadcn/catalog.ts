@@ -38,7 +38,7 @@ export const shadcnComponentDefinitions = {
         .string()
         .nullable()
         .describe(
-          "Canonical Lucide icon name in kebab-case, for example calendar, mail, chart-column, dumbbell, or triangle-alert.",
+          "Lucide icon name in PascalCase, for example Calendar, Mail, ChartColumn, Dumbbell, or TriangleAlert.",
         ),
       description: z.string().nullable(),
       maxWidth: z.enum(["sm", "md", "lg", "full"]).nullable(),
@@ -47,7 +47,7 @@ export const shadcnComponentDefinitions = {
     }),
     slots: ["default"],
     description:
-      "Container card for content sections. Use for forms/content boxes, NOT for page headers. Icon is a Lucide icon name (e.g. chart-column) to use in place of a decorative emoji.",
+      "Container card for content sections. Use for forms/content boxes, NOT for page headers. Icon is a PascalCase Lucide icon name, for example Calendar or ChartColumn, to use in place of a decorative emoji.",
     example: { title: "Overview", description: "Your account summary" },
   },
 

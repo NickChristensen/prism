@@ -52,7 +52,7 @@ IMPORTANT: State paths use RFC 6901 JSON Pointer syntax (e.g. "/todos/0/title").
 
 AVAILABLE COMPONENTS (44):
 
-- Card: { title?: string, icon?: string, description?: string, maxWidth?: "sm" | "md" | "lg" | "full", centered?: boolean, className?: string } - Container card for content sections. Use for forms/content boxes, NOT for page headers. Icon is a Lucide icon name (e.g. chart-column) to use in place of a decorative emoji. [accepts children]
+- Card: { title?: string, icon?: string, description?: string, maxWidth?: "sm" | "md" | "lg" | "full", centered?: boolean, className?: string } - Container card for content sections. Use for forms/content boxes, NOT for page headers. Icon is a PascalCase Lucide icon name, for example Calendar or ChartColumn, to use in place of a decorative emoji. [accepts children]
 - Stack: { direction?: "horizontal" | "vertical", gap?: "none" | "sm" | "md" | "lg" | "xl", align?: "start" | "center" | "end" | "stretch", justify?: "start" | "center" | "end" | "between" | "around", className?: string } - Flex container for layouts [accepts children]
 - Grid: { columns?: number, gap?: "sm" | "md" | "lg" | "xl", className?: string } - Grid layout (1-6 columns) [accepts children]
 - Separator: { orientation?: "horizontal" | "vertical" } - Visual separator line
@@ -67,7 +67,7 @@ AVAILABLE COMPONENTS (44):
 - Text: { text: string, variant?: "body" | "caption" | "muted" | "lead" } - Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [link](https://example.com).
 - BulletList: { items: Array<string> } - Bulleted unordered list of short text items. Each item supports the same inline markdown as Text.
 - NumberedList: { items: Array<string> } - Numbered ordered list of short text items. Each item supports the same inline markdown as Text.
-- Icon: { name: string, size?: number, color?: "amber" | "blue" | "cyan" | "emerald" | "fuchsia" | "green" | "indigo" | "lime" | "orange" | "pink" | "purple" | "red" | "rose" | "sky" | "teal" | "violet" | "yellow" } - Lucide icon using a canonical kebab-case name such as calendar, mail, or chart-column. Omitting color inherits text color.
+- Icon: { name: string, size?: "sm" | "md" | "lg", color?: "default" | "muted" | "primary" | "success" | "warning" | "danger" } - Lucide icon by PascalCase name. Examples: MapPin, Mail, Globe, Calendar, Star, Heart, Check, X, ArrowRight, Phone, Building, Clock, Shield, Zap, Users, Eye, Download, Upload, Search, Filter, Settings, Bell, ChevronRight, ExternalLink, Info, TriangleAlert, CircleCheck, CircleX. Use in horizontal Stacks with Text for icon+label patterns. Never use emoji; always use Icon.
 - Avatar: { src?: string, name: string, size?: "sm" | "md" | "lg" } - User avatar with fallback initials
 - Badge: { text: string, variant?: "default" | "secondary" | "destructive" | "outline" } - Status badge
 - Image: { src?: string, alt: string, width?: number, height?: number } - Image component. Renders an img tag when src is provided, otherwise a placeholder.
@@ -77,12 +77,12 @@ AVAILABLE COMPONENTS (44):
 - Spinner: { size?: "sm" | "md" | "lg", label?: string } - Loading spinner indicator
 - Tooltip: { content: string, text: string } - Hover tooltip. Shows content on hover over text.
 - Popover: { trigger: string, content: string } - Popover that appears on click of trigger.
-- Input: { label: string, name: string, type?: "text" | "email" | "password" | "number", placeholder?: string, value?: string, checks?: Array<{ type: string, message: string, args?: unknown }>, validateOn?: "change" | "blur" | "submit" } - Text input field. Use { $bindState } on value for two-way binding. Use checks for validation (e.g. required, email, minLength). validateOn controls timing (default: blur). [events: submit, focus, blur]
-- Textarea: { label: string, name: string, placeholder?: string, rows?: number, value?: string, checks?: Array<{ type: string, message: string, args?: unknown }>, validateOn?: "change" | "blur" | "submit" } - Multi-line text input. Use { $bindState } on value for binding. Use checks for validation. validateOn controls timing (default: blur).
-- Select: { label: string, name: string, options: Array<string>, placeholder?: string, value?: string, checks?: Array<{ type: string, message: string, args?: unknown }>, validateOn?: "change" | "blur" | "submit" } - Dropdown select input. Use { $bindState } on value for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
-- Checkbox: { label: string, name: string, checked?: boolean, checks?: Array<{ type: string, message: string, args?: unknown }>, validateOn?: "change" | "blur" | "submit" } - Checkbox input. Use { $bindState } on checked for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
-- Radio: { label: string, name: string, options: Array<string>, value?: string, checks?: Array<{ type: string, message: string, args?: unknown }>, validateOn?: "change" | "blur" | "submit" } - Radio button group. Use { $bindState } on value for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
-- Switch: { label: string, name: string, checked?: boolean, checks?: Array<{ type: string, message: string, args?: unknown }>, validateOn?: "change" | "blur" | "submit" } - Toggle switch. Use { $bindState } on checked for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
+- Input: { label: string, name: string, type?: "text" | "email" | "password" | "number", placeholder?: string, value?: string, checks?: Array<{ type: string, message: string, args?: Record<string, unknown> }>, validateOn?: "change" | "blur" | "submit" } - Text input field. Use { $bindState } on value for two-way binding. Use checks for validation (e.g. required, email, minLength). validateOn controls timing (default: blur). [events: submit, focus, blur]
+- Textarea: { label: string, name: string, placeholder?: string, rows?: number, value?: string, checks?: Array<{ type: string, message: string, args?: Record<string, unknown> }>, validateOn?: "change" | "blur" | "submit" } - Multi-line text input. Use { $bindState } on value for binding. Use checks for validation. validateOn controls timing (default: blur).
+- Select: { label: string, name: string, options: Array<string>, placeholder?: string, value?: string, checks?: Array<{ type: string, message: string, args?: Record<string, unknown> }>, validateOn?: "change" | "blur" | "submit" } - Dropdown select input. Use { $bindState } on value for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
+- Checkbox: { label: string, name: string, checked?: boolean, checks?: Array<{ type: string, message: string, args?: Record<string, unknown> }>, validateOn?: "change" | "blur" | "submit" } - Checkbox input. Use { $bindState } on checked for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
+- Radio: { label: string, name: string, options: Array<string>, value?: string, checks?: Array<{ type: string, message: string, args?: Record<string, unknown> }>, validateOn?: "change" | "blur" | "submit" } - Radio button group. Use { $bindState } on value for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
+- Switch: { label: string, name: string, checked?: boolean, checks?: Array<{ type: string, message: string, args?: Record<string, unknown> }>, validateOn?: "change" | "blur" | "submit" } - Toggle switch. Use { $bindState } on checked for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
 - Slider: { label?: string, min?: number, max?: number, step?: number, value?: number } - Range slider input. Use { $bindState } on value for binding. [events: change]
 - Button: { label: string, variant?: "primary" | "secondary" | "danger", disabled?: boolean } - Clickable button. Bind on.press for handler. [events: press]
 - Link: { label: string, href: string } - Anchor link. Bind on.press for click handler. [events: press]
@@ -149,8 +149,8 @@ Any prop value can be a dynamic expression that resolves based on state. Three f
 
 Use $bindState for form inputs (text fields, checkboxes, selects, sliders, etc.) and $state for read-only data display. Inside repeat scopes, use $bindItem for form inputs bound to the current item. Use dynamic props instead of duplicating elements with opposing visible conditions when only prop values differ.
 
-4. Template: `{ "$template": "Hello, ${/name}!" }` - interpolates `${/path}` references in the string with values from the state model.
-   Example: `"label": { "$template": "Items: ${/cart/count} | Total: ${/cart/total}" }` renders "Items: 3 | Total: 42.00" when /cart/count is 3 and /cart/total is 42.00.
+4. Template: `{ "$template": "Hello, ${/name}!" }` - interpolates references in the string. Absolute paths like `${/path}` resolve against the state model. Bare names like `${field}` resolve against the current repeat item first, then fall back to the state model at `/<field>`.
+   Example: `"label": { "$template": "Items: ${/cart/count} | Total: ${/cart/total}" }` renders "Items: 3 | Total: 42.00" when /cart/count is 3 and /cart/total is 42.00. Inside a repeat, `{ "$template": "${name} - ${email}" }` reads name and email from each item.
 
 VALIDATION:
 Form components that accept a `checks` prop support client-side validation.
