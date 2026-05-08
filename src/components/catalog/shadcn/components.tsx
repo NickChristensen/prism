@@ -570,7 +570,24 @@ export const shadcnComponents = {
   },
 
   Badge: ({ props }: BaseComponentProps<ShadcnProps<"Badge">>) => {
-    return <Badge variant={props.variant ?? "default"}>{props.text}</Badge>;
+    const variant =
+      props.variant === "danger"
+        ? "destructive"
+        : props.variant === "success" || props.variant === "warning"
+          ? "secondary"
+          : (props.variant ?? "default");
+    const customClass =
+      props.variant === "success"
+        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+        : props.variant === "warning"
+          ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
+          : "";
+
+    return (
+      <Badge variant={variant} className={customClass}>
+        {props.text}
+      </Badge>
+    );
   },
 
   Alert: ({ props }: BaseComponentProps<ShadcnProps<"Alert">>) => {
@@ -1026,9 +1043,11 @@ export const shadcnComponents = {
     const variant =
       props.variant === "danger"
         ? "destructive"
-        : props.variant === "secondary"
-          ? "secondary"
-          : "default";
+        : props.variant === "outline"
+          ? "outline"
+          : props.variant === "secondary"
+            ? "secondary"
+            : "default";
 
     return (
       <Button

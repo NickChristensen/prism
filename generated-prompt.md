@@ -64,12 +64,12 @@ AVAILABLE COMPONENTS (44):
 - Carousel: { items: Array<{ title?: string, description?: string }> } - Horizontally scrollable carousel of cards.
 - Table: { columns: Array<string>, rows: Array<Array<string>>, caption?: string } - Data table. columns: header labels. rows: 2D array of cell strings, e.g. [["Alice","admin"],["Bob","user"]].
 - Heading: { text: string, level?: "h1" | "h2" | "h3" | "h4" } - Heading text (h1-h4)
-- Text: { text: string, variant?: "body" | "caption" | "muted" | "lead" } - Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [link](https://example.com).
+- Text: { text: string, variant?: "body" | "caption" | "muted" | "lead" } - Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [link](https://example.com). In repeat scopes, use { "$template": "${field1} ${field2}" } to interpolate item fields.
 - BulletList: { items: Array<string> } - Bulleted unordered list of short text items. Each item supports the same inline markdown as Text.
 - NumberedList: { items: Array<string> } - Numbered ordered list of short text items. Each item supports the same inline markdown as Text.
 - Icon: { name: string, size?: "sm" | "md" | "lg", color?: "default" | "muted" | "primary" | "success" | "warning" | "danger" } - Lucide icon by PascalCase name. Examples: MapPin, Mail, Globe, Calendar, Star, Heart, Check, X, ArrowRight, Phone, Building, Clock, Shield, Zap, Users, Eye, Download, Upload, Search, Filter, Settings, Bell, ChevronRight, ExternalLink, Info, TriangleAlert, CircleCheck, CircleX. Use in horizontal Stacks with Text for icon+label patterns. Never use emoji; always use Icon.
 - Avatar: { src?: string, name: string, size?: "sm" | "md" | "lg" } - User avatar with fallback initials
-- Badge: { text: string, variant?: "default" | "secondary" | "destructive" | "outline" } - Status badge
+- Badge: { text: string, variant?: "default" | "secondary" | "outline" | "success" | "warning" | "danger" } - Status badge
 - Image: { src?: string, alt: string, width?: number, height?: number } - Image component. Renders an img tag when src is provided, otherwise a placeholder.
 - Alert: { title: string, message?: string, type?: "info" | "success" | "warning" | "error" } - Alert banner
 - Progress: { value: number, max?: number, label?: string } - Progress bar (value 0-100)
@@ -84,7 +84,7 @@ AVAILABLE COMPONENTS (44):
 - Radio: { label: string, name: string, options: Array<string>, value?: string, checks?: Array<{ type: string, message: string, args?: Record<string, unknown> }>, validateOn?: "change" | "blur" | "submit" } - Radio button group. Use { $bindState } on value for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
 - Switch: { label: string, name: string, checked?: boolean, checks?: Array<{ type: string, message: string, args?: Record<string, unknown> }>, validateOn?: "change" | "blur" | "submit" } - Toggle switch. Use { $bindState } on checked for binding. Use checks for validation. validateOn controls timing (default: change). [events: change]
 - Slider: { label?: string, min?: number, max?: number, step?: number, value?: number } - Range slider input. Use { $bindState } on value for binding. [events: change]
-- Button: { label: string, variant?: "primary" | "secondary" | "danger", disabled?: boolean } - Clickable button. Bind on.press for handler. [events: press]
+- Button: { label: string, variant?: "primary" | "secondary" | "outline" | "danger", disabled?: boolean } - Clickable button. primary = solid fill, outline = bordered/transparent, secondary = muted fill, danger = destructive action. Bind on.press for handler. [events: press]
 - Link: { label: string, href: string } - Anchor link. Bind on.press for click handler. [events: press]
 - DropdownMenu: { label: string, items: Array<{ label: string, value: string }>, value?: string } - Dropdown menu with trigger button and selectable items. Use { $bindState } on value for selected item binding. [events: select]
 - Toggle: { label: string, pressed?: boolean, variant?: "default" | "outline" } - Toggle button. Use { $bindState } on pressed for state binding. [events: change]

@@ -194,7 +194,7 @@ export const shadcnComponentDefinitions = {
       variant: z.enum(["body", "caption", "muted", "lead"]).nullable(),
     }),
     description:
-      "Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [link](https://example.com).",
+      'Paragraph text. Supports inline markdown: **bold**, *italic*, ==highlight==, ~~strikethrough~~, `code`, and [link](https://example.com). In repeat scopes, use { "$template": "${field1} ${field2}" } to interpolate item fields.',
     example: {
       text: "Ship **today**, verify *carefully*, ==watch the rollout==, ignore ~~stale~~ docs, run `npm run build`, and [open Prism](https://example.com).",
     },
@@ -225,7 +225,7 @@ export const shadcnComponentDefinitions = {
     props: z.object({
       text: z.string(),
       variant: z
-        .enum(["default", "secondary", "destructive", "outline"])
+        .enum(["default", "secondary", "outline", "success", "warning", "danger"])
         .nullable(),
     }),
     description: "Status badge",
@@ -402,11 +402,12 @@ export const shadcnComponentDefinitions = {
   Button: {
     props: z.object({
       label: z.string(),
-      variant: z.enum(["primary", "secondary", "danger"]).nullable(),
+      variant: z.enum(["primary", "secondary", "outline", "danger"]).nullable(),
       disabled: z.boolean().nullable(),
     }),
     events: ["press"],
-    description: "Clickable button. Bind on.press for handler.",
+    description:
+      "Clickable button. primary = solid fill, outline = bordered/transparent, secondary = muted fill, danger = destructive action. Bind on.press for handler.",
     example: { label: "Submit", variant: "primary" },
   },
 
