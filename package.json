@@ -12,7 +12,8 @@
     "deploy": "npm run build && launchctl kickstart -k gui/$(id -u)/ai.nick.prism",
     "postdeploy": "npm run sync-prompt",
     "print-prompt": "npx tsx scripts/print-prompt.ts",
-    "sync-prompt": "npx tsx scripts/sync-prompt.ts"
+    "sync-prompt": "npx tsx scripts/sync-prompt.ts",
+    "validate-spec": "npx tsx scripts/validate-spec.ts"
   },
   "dependencies": {
     "@json-render/core": "^0.16.0",
