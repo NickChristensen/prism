@@ -4,6 +4,7 @@ import { Calendar } from "@/components/catalog/calendar";
 import { Chat } from "@/components/catalog/chat";
 import { Icon } from "@/components/catalog/icon-client";
 import { BulletList, NumberedList } from "@/components/catalog/lists";
+import { Metric } from "@/components/catalog/metric";
 import { StockQuote } from "@/components/catalog/stock-quote";
 import { Tweet } from "@/components/catalog/tweet";
 import { TodoList } from "@/components/catalog/todo-list";
@@ -26,6 +27,7 @@ export const { registry, handlers, executeAction } = defineRegistry(catalog, {
     Text: shadcnComponents.Text,
     BulletList,
     NumberedList,
+    Metric,
     Image: shadcnComponents.Image,
     Avatar: shadcnComponents.Avatar,
     Badge: shadcnComponents.Badge,

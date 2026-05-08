@@ -8,6 +8,7 @@ import {
   bulletListDefinition,
   numberedListDefinition,
 } from "@/components/catalog/lists";
+import { metricDefinition } from "@/components/catalog/metric";
 import { stockQuoteDefinition } from "@/components/catalog/stock-quote";
 import { tweetDefinition } from "@/components/catalog/tweet";
 import { todoListDefinition } from "@/components/catalog/todo-list";
@@ -29,6 +30,7 @@ export const catalog = defineCatalog(schema, {
     Text: shadcnComponentDefinitions.Text,
     BulletList: bulletListDefinition,
     NumberedList: numberedListDefinition,
+    Metric: metricDefinition,
     Icon: iconDefinition,
     Avatar: shadcnComponentDefinitions.Avatar,
     Badge: shadcnComponentDefinitions.Badge,
