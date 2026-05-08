@@ -1,7 +1,7 @@
 #!/usr/bin/env npx tsx
 
 import { readFileSync } from "node:fs";
-import { applySpecPatch, type JsonPatch } from "@json-render/core";
+import { applySpecPatch, type JsonPatch, type Spec } from "@json-render/core";
 import { catalog } from "../src/lib/catalog";
 
 function usage(): never {
@@ -11,7 +11,7 @@ function usage(): never {
 
 function loadSpec(filePath: string): unknown {
   const raw = readFileSync(filePath, "utf8");
-  const spec: Record<string, unknown> = {};
+  const spec: Spec = { root: "", elements: {} };
 
   for (const [index, rawLine] of raw.split("\n").entries()) {
     const lineNumber = index + 1;
@@ -64,11 +64,13 @@ function main(): void {
       process.exit(0);
     }
 
+    const issues = result.error?.issues ?? [];
+
     console.error(
       JSON.stringify(
         {
           success: false,
-          issues: result.error.issues,
+          issues,
         },
         null,
         2,
