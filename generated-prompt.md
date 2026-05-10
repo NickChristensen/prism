@@ -50,7 +50,7 @@ For lists where users can add/remove items (todos, carts, etc.), use pushState a
 
 IMPORTANT: State paths use RFC 6901 JSON Pointer syntax (e.g. "/todos/0/title"). Do NOT use JavaScript-style dot notation (e.g. "/todos.length" is WRONG). To generate unique IDs for new items, use "$id" instead of trying to read array length.
 
-AVAILABLE COMPONENTS (45):
+AVAILABLE COMPONENTS (47):
 
 - Card: { title?: string, icon?: string, description?: string, maxWidth?: "sm" | "md" | "lg" | "full", centered?: boolean, className?: string } - Container card for content sections. Use for forms/content boxes, NOT for page headers. Icon is a PascalCase Lucide icon name, for example Calendar or ChartColumn, to use in place of a decorative emoji. [accepts children]
 - Stack: { direction?: "horizontal" | "vertical", gap?: "none" | "sm" | "md" | "lg" | "xl", align?: "start" | "center" | "end" | "stretch", justify?: "start" | "center" | "end" | "between" | "around", className?: string } - Flex container for layouts [accepts children]
@@ -68,6 +68,8 @@ AVAILABLE COMPONENTS (45):
 - BulletList: { items: Array<string> } - Bulleted unordered list of short text items. Each item supports the same inline markdown as Text.
 - NumberedList: { items: Array<string> } - Numbered ordered list of short text items. Each item supports the same inline markdown as Text.
 - Metric: { label: string, value: string, change?: string, changeType?: "positive" | "negative" | "neutral", prefix?: string, suffix?: string } - Key metric or stat display. Shows a large value with label and optional change indicator. Use for dashboard KPIs, health stats, finance summaries, workout totals, and briefing numbers.
+- BarGraph: { title?: string, data: Array<{ label: string, value: number }> } - Vertical bar chart for compact comparisons across labeled numeric values. Use for counts, rankings, categories, and short time ranges.
+- LineGraph: { title?: string, data: Array<{ label: string, value: number }> } - Line chart with points for numeric trends over ordered labels. Use for time series, progress, changes, and small trend summaries.
 - Icon: { name: string, size?: "sm" | "md" | "lg", color?: "default" | "muted" | "primary" | "success" | "warning" | "danger" } - Lucide icon by PascalCase name. Examples: MapPin, Mail, Globe, Calendar, Star, Heart, Check, X, ArrowRight, Phone, Building, Clock, Shield, Zap, Users, Eye, Download, Upload, Search, Filter, Settings, Bell, ChevronRight, ExternalLink, Info, TriangleAlert, CircleCheck, CircleX. Use in horizontal Stacks with Text for icon+label patterns. Never use emoji; always use Icon.
 - Avatar: { src?: string, name: string, size?: "sm" | "md" | "lg" } - User avatar with fallback initials
 - Badge: { text: string, variant?: "default" | "secondary" | "outline" | "success" | "warning" | "danger" } - Status badge
