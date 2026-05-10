@@ -8,9 +8,15 @@ const chartDatumSchema = z.object({
   value: z.number(),
 });
 
+const chartAnnotationSchema = z.object({
+  value: z.number(),
+  label: z.string(),
+});
+
 export const chartPropsSchema = z.object({
   title: z.string().optional(),
   data: z.array(chartDatumSchema),
+  annotation: chartAnnotationSchema.optional(),
 });
 
 export type ChartProps = z.infer<typeof chartPropsSchema>;
@@ -18,18 +24,50 @@ export type ChartProps = z.infer<typeof chartPropsSchema>;
 export const barGraphDefinition = {
   props: chartPropsSchema,
   description:
-    "Vertical bar chart for compact comparisons across labeled numeric values. Use for counts, rankings, categories, and short time ranges.",
+    "Vertical bar chart for compact comparisons across labeled numeric values. Use for counts, rankings, categories, and short time ranges. Optionally include an annotation line with a value and label.",
 };
 
 export const lineGraphDefinition = {
   props: chartPropsSchema,
   description:
-    "Line chart with points for numeric trends over ordered labels. Use for time series, progress, changes, and small trend summaries.",
+    "Line chart with points for numeric trends over ordered labels. Use for time series, progress, changes, and small trend summaries. Optionally include an annotation line with a value and label.",
 };
+
+function AnnotationLine({
+  label,
+  value,
+  top,
+}: {
+  label: string;
+  value: number;
+  top: number;
+}) {
+  return (
+    <div
+      className="pointer-events-none absolute inset-x-0 z-10"
+      style={{ top: `${top}%` }}
+    >
+      <div
+        className="h-px"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(to right, color-mix(in oklab, var(--primary) 50%, transparent) 0 4px, transparent 4px 8px)",
+        }}
+      />
+      <span className="absolute bottom-[calc(100%+0.25rem)] left-0 inline-flex w-fit rounded-sm bg-background/80 p-1 text-[11px] font-medium leading-none text-primary">
+        {label}: {value}
+      </span>
+    </div>
+  );
+}
 
 export function BarGraph({ props }: { props: ChartProps }) {
   const data = props.data ?? [];
   const maxValue = Math.max(...data.map((d) => d.value), 1);
+  const annotationTop =
+    props.annotation && maxValue > 0
+      ? 100 - Math.max(Math.min(props.annotation.value / maxValue, 1), 0) * 100
+      : null;
   const barColors = [
     "bg-primary",
     "bg-primary/85",
@@ -40,7 +78,14 @@ export function BarGraph({ props }: { props: ChartProps }) {
   return (
     <div className="min-w-0 space-y-3">
       {props.title && <div className="text-sm font-medium">{props.title}</div>}
-      <div className="flex h-44 items-end gap-2">
+      <div className="relative flex h-44 items-end gap-2">
+        {props.annotation && annotationTop !== null && (
+          <AnnotationLine
+            label={props.annotation.label}
+            value={props.annotation.value}
+            top={annotationTop}
+          />
+        )}
         {data.map((d, i) => (
           <div
             key={`${d.label}-${i}`}
@@ -77,6 +122,11 @@ export function LineGraph({ props }: { props: ChartProps }) {
   const paddedMin = minValue - rawRange * 0.15;
   const paddedMax = maxValue + rawRange * 0.1;
   const range = paddedMax - paddedMin || 1;
+  const annotationTop = props.annotation
+    ? 100 -
+      Math.max(Math.min((props.annotation.value - paddedMin) / range, 1), 0) *
+        100
+    : null;
 
   const width = 300;
   const height = 140;
@@ -89,9 +139,7 @@ export function LineGraph({ props }: { props: ChartProps }) {
       padding.left +
       (data.length > 1 ? (i / (data.length - 1)) * chartWidth : chartWidth / 2);
     const y =
-      padding.top +
-      chartHeight -
-      ((d.value - paddedMin) / range) * chartHeight;
+      padding.top + chartHeight - ((d.value - paddedMin) / range) * chartHeight;
 
     return { x, y, ...d };
   });
@@ -135,6 +183,13 @@ export function LineGraph({ props }: { props: ChartProps }) {
         </div>
       )}
       <div className="relative h-44 text-primary">
+        {props.annotation && annotationTop !== null && (
+          <AnnotationLine
+            label={props.annotation.label}
+            value={props.annotation.value}
+            top={annotationTop}
+          />
+        )}
         <svg
           viewBox={`0 0 ${width} ${height}`}
           className="h-full w-full"
