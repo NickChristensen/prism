@@ -45,7 +45,7 @@ type StockQuoteProps = z.infer<typeof stockQuotePropsSchema>;
 export const stockQuoteDefinition = {
   props: stockQuotePropsSchema,
   description:
-    "Self-contained stock quote card for one or more stock, ETF, index, or crypto quotes. Use directly rather than wrapping in a Card; use a separate Card for commentary if needed. Pass symbols only; Prism fetches and displays live prices, intraday data, and comparisons.",
+    "Self-contained stock quote card for one or more stock, ETF, index, or crypto quotes. DO NOT place inside a Card; use a separate Card for commentary if needed. Pass symbols only; Prism fetches and displays live prices, intraday data, and comparisons.",
 };
 
 export type Comparison = {
@@ -208,6 +208,10 @@ function getStockQuoteChartModel(quote: StockQuoteData) {
     domainMin: Math.min(...domainValues),
     domainMax: Math.max(...domainValues),
   };
+}
+
+function hasStockQuoteChart(quote?: StockQuoteData) {
+  return quote ? getStockQuoteChartModel(quote) !== null : false;
 }
 
 function StockQuotePriceChart({
@@ -426,11 +430,11 @@ function StockQuoteListCard({
   symbol?: string;
 }) {
   const isPositive = (quote?.change ?? 0) >= 0;
-  const hasIntraday = loading || (quote?.intraday?.length ?? 0) > 0;
+  const hasChart = loading || hasStockQuoteChart(quote);
 
   return (
     <Card className={cn("gap-0 p-0", className)}>
-      {hasIntraday ? (
+      {hasChart ? (
         <CardContent className="relative p-0">
           <StockQuotePriceChart quote={quote} className="h-44" />
           <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between px-4 pt-4">
@@ -443,7 +447,7 @@ function StockQuoteListCard({
           </div>
         </CardContent>
       ) : (
-        <CardContent className="flex items-start justify-between px-4 pt-4">
+        <CardContent className="flex items-start justify-between px-4 py-4">
           <StockQuoteSymbol symbol={quote?.symbol ?? symbol ?? "..."} />
           <StockQuoteChangeBadge
             changePercent={quote?.changePercent}
@@ -467,14 +471,14 @@ function StockQuoteCompactRow({
   symbol?: string;
 }) {
   const isPositive = (quote?.change ?? 0) >= 0;
-  const hasIntraday = loading || (quote?.intraday?.length ?? 0) > 0;
+  const hasChart = loading || hasStockQuoteChart(quote);
 
   return (
     <div className="flex gap-3 p-3">
       <div
         className={cn(
           "flex gap-2 justify-between",
-          hasIntraday ? "flex-col items-start" : "flex-row items-center grow",
+          hasChart ? "flex-col items-start" : "flex-row items-center grow",
         )}
       >
         <StockQuoteSymbol symbol={quote?.symbol ?? symbol ?? "..."} />
@@ -489,7 +493,7 @@ function StockQuoteCompactRow({
       {loading ? (
         <Skeleton className="grow" />
       ) : (
-        hasIntraday && (
+        hasChart && (
           <StockQuotePriceChart quote={quote} showTooltip={false} />
         )
       )}
